@@ -1,1 +1,1 @@
-# Movie DB with update, delete, select built by Java Web.
+# Movie DB with insert, delete, update, select built by Java Web.
