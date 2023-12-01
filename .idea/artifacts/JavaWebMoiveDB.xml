@@ -1,0 +1,13 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="JavaWebMoiveDB">
+    <output-path>$PROJECT_DIR$/out/artifacts/JavaWebMoiveDB</output-path>
+    <root id="root">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="JavaWebMoiveDB" />
+        </element>
+      </element>
+      <element id="javaee-facet-resources" facet="JavaWebMoiveDB/web/Web" />
+    </root>
+  </artifact>
+</component>
