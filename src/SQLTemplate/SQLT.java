@@ -1,13 +1,14 @@
 package SQLTemplate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class SQLT {
     /** An abstract SQL Template without SQL syntax checking. */
     public String table;
-    public List<String> keys;
-    public List<String> values;
-    public List<String> conditions;
+    public List<String> keys = new ArrayList<>();
+    public List<String> values = new ArrayList<>();
+    public List<String> conditions = new ArrayList<>();
 
     public SQLT AddKeyValuePair(String key, String value) {
         this.keys.add(key);
