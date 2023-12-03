@@ -73,7 +73,7 @@ public class SQLUtil {
         return data;
     }
 
-    public static int executeSQL(String sql) {
+    public static int Update(String sql) {
         Connection conn = DBConnector.getConnection();
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -88,5 +88,21 @@ public class SQLUtil {
         }
 
         return count;
+    }
+
+    public static ResultSet Query(String sql) {
+        Connection conn = DBConnector.getConnection();
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            pstmt = conn.prepareStatement(sql);
+            rs = pstmt.executeQuery();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            DBConnector.closeConnection(conn, pstmt, rs);
+        }
+
+        return rs;
     }
 }

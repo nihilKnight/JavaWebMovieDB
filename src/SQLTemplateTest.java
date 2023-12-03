@@ -1,6 +1,7 @@
 import SQLTemplate.*;
 import util.SQLUtil;
 
+import java.sql.ResultSet;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -14,8 +15,9 @@ public class SQLTemplateTest {
     public final static String table = "test";
     public static void main(String[] args) {
 //        TestInsertT();
+        TestSelectTSimple();
 //        TestUpdateT();
-        TestDeleteT();
+//        TestDeleteT();
     }
 
     static class TestDao {
@@ -101,8 +103,8 @@ public class SQLTemplateTest {
                 .toSQL();
         assertEquals(expected, actual);
 
-        /** Test whether the execution result is right.*/
-        int count = SQLUtil.executeSQL(actual);
+        /** Test whether the execution result is successful.*/
+        int count = SQLUtil.Update(actual);
         assertTrue( count > 0);
     }
 
@@ -117,8 +119,8 @@ public class SQLTemplateTest {
                 .toSQL();
         assertEquals(expected, actual);
 
-        /** Test whether the execution result is right.*/
-        int count = SQLUtil.executeSQL(actual);
+        /** Test whether the execution result is successful.*/
+        int count = SQLUtil.Update(actual);
         assertTrue( count > 0);
     }
 
@@ -138,8 +140,24 @@ public class SQLTemplateTest {
                 .toSQL();
         assertEquals(expected, actual);
 
-        /** Test whether the execution result is right.*/
-        int count = SQLUtil.executeSQL(actual);
+        /** Test whether the execution result is successful.*/
+        int count = SQLUtil.Update(actual);
         assertTrue( count > 0);
     }
+
+    public static void TestSelectTSimple() {
+        String expected = """
+                SELECT *\s
+                FROM test\s
+                WHERE a1 = 1234567890;""";
+        String actual = new SelectT(table)
+                .AddCondition("a1 = 1234567890")
+                .toSQL();
+        assertEquals(expected, actual);
+
+        /** Test whether the Query result is not null.*/
+        ResultSet rs = SQLUtil.Query(actual);
+        assertNotNull(rs);
+    }
+
 }

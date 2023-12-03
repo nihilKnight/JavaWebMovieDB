@@ -28,7 +28,7 @@ public class UpdateT extends SQLT{
                 }
             }
         }
-        return this.updateSQL.append(";").toString();
+        return this.updateSQL.append(';').toString();
     }
 
 }

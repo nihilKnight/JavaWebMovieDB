@@ -20,6 +20,6 @@ public class DeleteT extends SQLT{
                 }
             }
         }
-        return this.deleteSQL.append(";").toString();
+        return this.deleteSQL.append(';').toString();
     }
 }
