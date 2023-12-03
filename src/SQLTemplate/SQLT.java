@@ -1,5 +1,7 @@
 package SQLTemplate;
 
+import util.SQLUtil;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +15,12 @@ public abstract class SQLT {
     public SQLT AddKeyValuePair(String key, String value) {
         this.keys.add(key);
         this.values.add(value);
+        return this;
+    }
+
+    public SQLT AddKeyValuePair(SQLUtil.DataInfo di) {
+        this.keys.add(di.attri_name);
+        this.values.add(SQLUtil.DataParser(di));
         return this;
     }
 

@@ -14,33 +14,33 @@ public class MoviesDao {
         Connection conn = DBConnector.getConnection();
         PreparedStatement pstmt = null;
         ResultSet rs = null;
-        try{
-            pstmt = conn.prepareStatement("insert into movies("+
-                    "movie_id" +
-                    "budget" +
-                    "homepage" +
-                    "original_language" +
-                    "original_title" +
-                    "overview" +
-                    "popularity" +
-                    "release_date" +
-                    "revenue" +
-                    "runtime" +
-                    "status" +
-                    "tagline" +
-                    "title" +
-                    "vote_average" +
-                    "vote_count" +
-                    ") values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
-            pstmt.setInt(1, m.getBudget());
-            pstmt.setString(2, m.getHomepage());
-            pstmt.setString(3, m.getOriginalLanguage());
-            count = pstmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            DBConnector.closeConnection(conn, pstmt, rs);
-        }
+//        try{
+//            pstmt = conn.prepareStatement("insert into movies("+
+//                    "movie_id" +
+//                    "budget" +
+//                    "homepage" +
+//                    "original_language" +
+//                    "original_title" +
+//                    "overview" +
+//                    "popularity" +
+//                    "release_date" +
+//                    "revenue" +
+//                    "runtime" +
+//                    "status" +
+//                    "tagline" +
+//                    "title" +
+//                    "vote_average" +
+//                    "vote_count" +
+//                    ") values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
+//            pstmt.setInt(1, m.getBudget());
+//            pstmt.setString(2, m.getHomepage());
+//            pstmt.setString(3, m.getOriginalLanguage());
+//            count = pstmt.executeUpdate();
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        } finally {
+//            DBConnector.closeConnection(conn, pstmt, rs);
+//        }
         return count;
     }
 }
