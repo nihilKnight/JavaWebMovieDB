@@ -7,17 +7,20 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import static org.junit.Assert.*;
 
 public class SQLTemplateTest {
     public final static String table = "test";
+    public final static String anotherTable = "anotherTest";
     public static void main(String[] args) {
 //        TestInsertT();
-        TestSelectTSimple();
+//        TestSelectTSimple();
 //        TestUpdateT();
 //        TestDeleteT();
+        TestSelectTJoin();
     }
 
     static class TestDao {
@@ -81,6 +84,39 @@ public class SQLTemplateTest {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    static class AnotherTestDao {
+        public Integer a7;
+        public Integer a1;
+        public String a8;
+
+        public AnotherTestDao() {}
+        public AnotherTestDao(Integer a7, Integer a1, String a8) {
+            this.a7 = a7;
+            this.a1 = a1;
+            this.a8 = a8;
+        }
+
+        public SQLUtil.DataInfo getA7() {
+            return new SQLUtil.DataInfo("a7", SQLUtil.DataType.BIGINT, this.a7);
+        }
+        public SQLUtil.DataInfo getA1() {
+            return new SQLUtil.DataInfo("a1", SQLUtil.DataType.BIGINT, this.a1);
+        }
+        public SQLUtil.DataInfo getA8() {
+            return new SQLUtil.DataInfo("a8", SQLUtil.DataType.VARCHAR, this.a8);
+        }
+
+        public void setA7(Integer a7) {
+            this.a7 = a7;
+        }
+        public void setA1(Integer a1) {
+            this.a1 = a1;
+        }
+        public void setA8(String a8) {
+            this.a8 = a8;
         }
     }
 
@@ -152,6 +188,28 @@ public class SQLTemplateTest {
                 WHERE a1 = 1234567890;""";
         String actual = new SelectT(table)
                 .AddCondition("a1 = 1234567890")
+                .toSQL();
+        assertEquals(expected, actual);
+
+        /** Test whether the Query result is not null.*/
+        ResultSet rs = SQLUtil.Query(actual);
+        assertNotNull(rs);
+    }
+
+    public static void TestSelectTJoin() {
+        String expected = """
+                SELECT test.a1, a2, a6, a7, a8\s
+                FROM test, anotherTest\s
+                WHERE test.a1 = anotherTest.a1;""";
+        String actual = new SelectT(List.of(table, anotherTable))
+                .AddColumn(table, new TestDao().getA1().attri_name)
+                .AddColumn(new TestDao().getA2().attri_name)
+                .AddColumn(new TestDao().getA6().attri_name)
+                .AddColumn(new AnotherTestDao().getA7().attri_name)
+                .AddColumn(new AnotherTestDao().getA8().attri_name)
+                .AddCondition(new Condition(Condition.Opt.E,
+                        table, new TestDao().getA1().attri_name,
+                        anotherTable, new AnotherTestDao().getA1().attri_name))
                 .toSQL();
         assertEquals(expected, actual);
 

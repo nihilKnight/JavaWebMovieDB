@@ -21,6 +21,11 @@ public class Condition {
         this.opt = opt;
         this.requi = requi;
     }
+    public Condition(Opt opt, String table, String attri, String requi) {
+        this.attri = table + '.' + attri;
+        this.opt = opt;
+        this.requi = requi;
+    }
     public Condition(Opt opt, SQLUtil.DataInfo di) {
         this.attri = di.attri_name;
         this.opt = opt;
@@ -30,6 +35,16 @@ public class Condition {
         this.attri = attri;
         this.opt = opt;
         this.requi = "(\n" + st.toSQL() + "\n)";
+    }
+    public Condition(Opt opt, String table, String attri, SelectT st) {
+        this.attri = table + '.' + attri;
+        this.opt = opt;
+        this.requi = "(\n" + st.toSQL() + "\n)";
+    }
+    public Condition(Opt opt, String table_1, String attri_1, String table_2, String attri_2) {
+        this.attri = table_1 + '.' + attri_1;
+        this.opt = opt;
+        this.requi = table_2 + '.' + attri_2;
     }
 
     @Override
