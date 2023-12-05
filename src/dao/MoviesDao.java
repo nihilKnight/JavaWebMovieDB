@@ -1,7 +1,8 @@
 package dao;
 
-import entity.Person;
+import SQLTemplate.*;
 import entity.Movie;
+import util.SQLUtil;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -43,5 +44,78 @@ public class MoviesDao {
     }
 
     /** TODO: SelectAll, SelectById, SelectByPerson, Update, Insert, Delete. */
+
+    public List<Movie> SelectAll(Integer limit) {
+        return Resolve(SQLUtil.Query(
+                new SelectT(TableName.movie_table)
+                        .AddOrder(new Movie().getMovieId().attri_name)
+                        .Limit(limit)
+                        .toSQL()
+        ));
+    }
+
+    public Movie SelectById(Integer id) {
+        Movie wanted = new Movie();
+        wanted.setMovieId(id);
+
+        return Resolve(SQLUtil.Query(
+                new SelectT(TableName.movie_table)
+                        .AddCondition(new Condition(Condition.Opt.E, wanted.getMovieId()))
+                        .toSQL()
+        )).get(0);
+    }
+
+    public int Insert(Movie m) {
+        return SQLUtil.Update(
+                new InsertT(TableName.movie_table)
+                        .AddKeyValuePair(m.getMovieId())
+                        .AddKeyValuePair(m.getBudget())
+                        .AddKeyValuePair(m.getHomepage())
+                        .AddKeyValuePair(m.getOriginalLanguage())
+                        .AddKeyValuePair(m.getOriginalTitle())
+                        .AddKeyValuePair(m.getOverview())
+                        .AddKeyValuePair(m.getReleaseDate())
+                        .AddKeyValuePair(m.getRevenue())
+                        .AddKeyValuePair(m.getRuntime())
+                        .AddKeyValuePair(m.getStatus())
+                        .AddKeyValuePair(m.getTagline())
+                        .AddKeyValuePair(m.getTitle())
+                        .AddKeyValuePair(m.getVoteAverage())
+                        .AddKeyValuePair(m.getVoteCount())
+                        .toSQL()
+        );
+    }
+
+    public int Update(Movie m) {
+        return SQLUtil.Update(
+                new UpdateT(TableName.movie_table)
+                        .AddKeyValuePair(m.getBudget())
+                        .AddKeyValuePair(m.getHomepage())
+                        .AddKeyValuePair(m.getOriginalLanguage())
+                        .AddKeyValuePair(m.getOriginalTitle())
+                        .AddKeyValuePair(m.getOverview())
+                        .AddKeyValuePair(m.getReleaseDate())
+                        .AddKeyValuePair(m.getRevenue())
+                        .AddKeyValuePair(m.getRuntime())
+                        .AddKeyValuePair(m.getStatus())
+                        .AddKeyValuePair(m.getTagline())
+                        .AddKeyValuePair(m.getTitle())
+                        .AddKeyValuePair(m.getVoteAverage())
+                        .AddKeyValuePair(m.getVoteCount())
+                        .AddCondition(new Condition(Condition.Opt.E, m.getMovieId()))
+                        .toSQL()
+        );
+    }
+
+    public int DeleteById(Integer id) {
+        Movie wanted = new Movie();
+        wanted.setMovieId(id);
+
+        return SQLUtil.Update(
+                new DeleteT(TableName.movie_table)
+                        .AddCondition(new Condition(Condition.Opt.E, wanted.getMovieId()))
+                        .toSQL()
+        );
+    }
 
 }
