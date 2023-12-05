@@ -1,7 +1,7 @@
 package dao;
 
 import SQLTemplate.*;
-import entity.Movie;
+import entity.*;
 import util.SQLUtil;
 
 import java.sql.ResultSet;
@@ -43,8 +43,6 @@ public class MoviesDao {
         return ml;
     }
 
-    /** TODO: SelectAll, SelectById, SelectByPerson, Update, Insert, Delete. */
-
     public List<Movie> SelectAll(Integer limit) {
         return Resolve(SQLUtil.Query(
                 new SelectT(TableName.movie_table)
@@ -63,6 +61,33 @@ public class MoviesDao {
                         .AddCondition(new Condition(Condition.Opt.E, wanted.getMovieId()))
                         .toSQL()
         )).get(0);
+    }
+
+    public List<Movie> SelectByKeyword(String keyword) {
+        Keyword wanted = new Keyword();
+        wanted.setKeywordName(keyword);
+
+        return Resolve(SQLUtil.Query(
+                new SelectT(List.of(TableName.keyword_table, TableName.movie_keyword_table, TableName.movie_table))
+                        .AddColumn(TableName.movie_table, "*")
+                        .AddCondition(new Condition(Condition.Opt.E,
+                                TableName.keyword_table, new Keyword().getId().attri_name,
+                                TableName.movie_keyword_table, new KeywordMovie().getKeywordId().attri_name
+                        ))
+                        .AddCondition(new Condition(Condition.Opt.E,
+                                TableName.movie_table, new Movie().getMovieId().attri_name,
+                                TableName.movie_keyword_table, new KeywordMovie().getMovieId().attri_name
+                        ))
+                        .AddCondition(new Condition(Condition.Opt.E, wanted.getKeywordName()))
+                        .toSQL()
+        ));
+    }
+
+    public List<Movie> SelectByCast(Person p) {
+        return Resolve(SQLUtil.Query(
+                new SelectT(List.of(TableName.person_table, TableName.cast_table, TableName.movie_table))
+                        .toSQL()
+        ));
     }
 
     public int Insert(Movie m) {
