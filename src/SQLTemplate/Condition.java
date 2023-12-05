@@ -4,7 +4,7 @@ import exce.NullConditionOptionException;
 import util.SQLUtil;
 
 public class Condition {
-    enum Opt{
+    public enum Opt{
         /** Greater, Less, Not Greater, Not Less, Equal, Not Equal
          ** In, Not In, Exists, Not Exists. */
         G, L, NG, NL, E, NE, IN, NIN, EX, NEX
