@@ -12,13 +12,7 @@ public class DeleteT extends SQLT{
     @Override
     public String toSQL() {
         if (! conditions.isEmpty()) {
-            this.deleteSQL.append("WHERE ");
-            for (int i = 0; i < conditions.size(); i ++) {
-                this.deleteSQL.append(conditions.get(i));
-                if (i < conditions.size()-1) {
-                    this.deleteSQL.append(" AND ");
-                }
-            }
+            this.deleteSQL.append("WHERE ").append(String.join(" AND ", this.conditions));
         }
         return this.deleteSQL.append(';').toString();
     }

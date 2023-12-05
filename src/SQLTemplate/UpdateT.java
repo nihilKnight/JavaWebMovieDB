@@ -20,13 +20,7 @@ public class UpdateT extends SQLT{
             }
         }
         if (! conditions.isEmpty()) {
-            this.updateSQL.append("WHERE ");
-            for (int i = 0; i < conditions.size(); i ++) {
-                this.updateSQL.append(conditions.get(i));
-                if (i < conditions.size()-1) {
-                    this.updateSQL.append(" AND ");
-                }
-            }
+            this.updateSQL.append("WHERE ").append(String.join(" AND ", this.conditions));
         }
         return this.updateSQL.append(';').toString();
     }
