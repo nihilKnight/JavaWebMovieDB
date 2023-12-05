@@ -2,6 +2,7 @@ package SQLTemplate;
 
 import javax.persistence.Tuple;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class SelectT extends SQLT{
@@ -14,15 +15,26 @@ public class SelectT extends SQLT{
     public List<String> orders = new ArrayList<>();
     public Integer limit = null;
 
+    public SelectT(List<String> tables) {
+        this.tables.addAll(tables);
+        this.selectSQL = new StringBuffer("SELECT ");
+    }
     public SelectT(String table) {
         this.table = table;
         this.selectSQL = new StringBuffer("SELECT ");
     }
 
-    /** TODO: Write methods addressing the columns collisions (maybe create a new subclass). */
     /** TODO: Write methods enable MySQL expressions (like arithmetics and functions), and alias ("AS"). */
     /** TODO: Write methods enable grouping functions (MAX, MIN, AVG). */
 
+    public SelectT AddColumn(String column) {
+        this.columns.add(column);
+        return this;
+    }
+    public SelectT AddColumn(String table, String column) {
+        this.columns.add(table + '.' + column);
+        return this;
+    }
     public SelectT AddOrder(String attri) {
         this.orders.add(attri);
         return this;
