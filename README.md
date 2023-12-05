@@ -3,11 +3,12 @@
 ## Prerequisites
 
 - Java: jdk-17
-- MySQL: v8.0.33
+- MySQL: v8.0.33/34
 - Tomcat: v9.0.83
 - JARs:
   - mysql-connector-j-8.0.33.jar
   - JUnit4 (for tests)
+  - ...(to be updated)
 
 ## Features
 
