@@ -32,6 +32,11 @@ public class PersonDao {
         return pl;
     }
 
+    public List<Person> selectName(String name, Integer Page){
+        List<Person> personList = new ArrayList<Person>();
+        return personList;
+    }
+
     public List<Person> SelectAll(Integer limit) {
         return Resolve(SQLUtil.Query(
                 new SelectT(TableName.person_table)

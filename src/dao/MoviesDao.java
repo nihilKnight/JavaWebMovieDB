@@ -44,4 +44,25 @@ public class MoviesDao {
 
     /** TODO: SelectAll, SelectById, SelectByPerson, Update, Insert, Delete. */
 
+    /** TOP AND MOST RECENT MOVIES*/
+    public List<Movie> TopPopular(Integer Page){
+        List<Movie> ml = new ArrayList<Movie>();
+        return ml;
+    }
+
+    public List<Movie> TopLatest(Integer Page){
+        List<Movie> ml = new ArrayList<Movie>();
+        return ml;
+    }
+
+    public List<Movie> getGenre(Integer genre_id, Integer Page){
+        List<Movie> ml = new ArrayList<Movie>();
+        return ml;
+    }
+
+    public List<Movie> searchName(String name, Integer Page){
+        List<Movie> ml = new ArrayList<Movie>();
+        return ml;
+    }
+
 }
