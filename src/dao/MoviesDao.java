@@ -143,4 +143,73 @@ public class MoviesDao {
         );
     }
 
+    /** TOP AND MOST RECENT MOVIES*/
+    public List<Movie> TopPopular(Integer Page){
+        List<Movie> ml = new ArrayList<Movie>();
+        return ml;
+    }
+
+    public List<Movie> TopLatest(Integer Page){
+        List<Movie> ml = new ArrayList<Movie>();
+        return ml;
+    }
+
+    public List<Movie> getGenre(Integer genre_id, Integer Page) {
+        List<Movie> ml = new ArrayList<Movie>();
+        return ml;
+    }
+
+    public List<Movie> SelectByKeyword(String keyword) {
+        Keyword wanted = new Keyword();
+        wanted.setKeywordName(keyword);
+
+        return Resolve(SQLUtil.Query(
+                new SelectT(List.of(TableName.keyword_table, TableName.movie_keyword_table, TableName.movie_table))
+                        .AddColumn(TableName.movie_table, "*")
+                        .AddCondition(new Condition(Condition.Opt.E,
+                                TableName.keyword_table, new Keyword().getId().attri_name,
+                                TableName.movie_keyword_table, new KeywordMovie().getKeywordId().attri_name
+                        ))
+                        .AddCondition(new Condition(Condition.Opt.E,
+                                TableName.movie_table, new Movie().getMovieId().attri_name,
+                                TableName.movie_keyword_table, new KeywordMovie().getMovieId().attri_name
+                        ))
+                        .AddCondition(new Condition(Condition.Opt.E, wanted.getKeywordName()))
+                        .toSQL()
+        ));
+    }
+
+    public List<Movie> SelectByCast(Person p) {
+        return Resolve(SQLUtil.Query(
+                new SelectT(List.of(TableName.person_table, TableName.cast_table, TableName.movie_table))
+                        .toSQL()
+        ));
+    }
+
+    public int Insert(Movie m) {
+        return SQLUtil.Update(
+                new InsertT(TableName.movie_table)
+                        .AddKeyValuePair(m.getMovieId())
+                        .AddKeyValuePair(m.getBudget())
+                        .AddKeyValuePair(m.getHomepage())
+                        .AddKeyValuePair(m.getOriginalLanguage())
+                        .AddKeyValuePair(m.getOriginalTitle())
+                        .AddKeyValuePair(m.getOverview())
+                        .AddKeyValuePair(m.getReleaseDate())
+                        .AddKeyValuePair(m.getRevenue())
+                        .AddKeyValuePair(m.getRuntime())
+                        .AddKeyValuePair(m.getStatus())
+                        .AddKeyValuePair(m.getTagline())
+                        .AddKeyValuePair(m.getTitle())
+                        .AddKeyValuePair(m.getVoteAverage())
+                        .AddKeyValuePair(m.getVoteCount())
+                        .toSQL()
+        );
+    }
+
+    public List<Movie> searchName(String name, Integer Page){
+        List<Movie> ml = new ArrayList<Movie>();
+        return ml;
+    }
+
 }
