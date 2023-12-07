@@ -60,9 +60,18 @@ public class MoviesDao {
         return ml;
     }
 
-    public List<Movie> searchName(String name, Integer Page){
+    public List<Movie> selectName(String name, Integer Page){
         List<Movie> ml = new ArrayList<Movie>();
         return ml;
     }
 
+    public Movie selectID(Integer ID){
+        Movie m = new Movie();
+        return m;
+    }
+
+    public List<Movie> selectByPersonID(Integer ID){
+        List<Movie> ml = new ArrayList<Movie>();
+        return ml;
+    }
 }

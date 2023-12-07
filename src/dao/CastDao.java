@@ -33,4 +33,14 @@ public class CastDao {
         }
         return castlist;
     }
+
+    public List<Cast> SelectByMovieID(Integer movie_id){
+        List<Cast> personList = new ArrayList<Cast>();
+        return personList;
+    }
+
+    public Cast SelectByPersonID(Integer person_id){
+        Cast cast = new Cast();
+        return cast;
+    }
 }
