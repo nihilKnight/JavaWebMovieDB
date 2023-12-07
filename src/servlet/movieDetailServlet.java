@@ -1,6 +1,8 @@
 package servlet;
 
+import dao.CastDao;
 import dao.MoviesDao;
+import entity.Cast;
 import entity.Movie;
 import dao.PersonDao;
 import entity.Person;
@@ -14,9 +16,19 @@ import java.util.ArrayList;
 import java.util.List;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-@WebServlet("/search")
-public class searchServlet extends HttpServlet {
+@WebServlet("/movieDetail")
+public class movieDetailServlet extends HttpServlet {
 
+    static class MovieWithCast{
+        private Movie movie;
+        private List<Cast> castList;
+
+        public MovieWithCast(Movie movie, List<Cast> castList) {
+            this.movie = movie;
+            this.castList = castList;
+        }
+
+    }
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doPost(request, response);
@@ -27,23 +39,16 @@ public class searchServlet extends HttpServlet {
 
         request.setCharacterEncoding("utf-8");
         response.setContentType("text/html;charset=utf-8");
-        String query = String.valueOf(request.getParameter("type"));
-        String name = String.valueOf(request.getParameter("name"));
-        Integer page = Integer.valueOf(request.getParameter("Page"));
+        Integer movie_id = Integer.valueOf(request.getParameter("movie_id"));
+
+        MoviesDao md = new MoviesDao();
+        Movie movie = md.selectID(movie_id);
+        CastDao cd = new CastDao();
+        List<Cast> castList = cd.SelectByMovieID(movie_id);
+        MovieWithCast mwc = new MovieWithCast(movie, castList);
 
         ObjectMapper objectMapper = new ObjectMapper();
-        String jsonMovies = "";
-
-        if(query.equals("movie")){
-            MoviesDao md = new MoviesDao();
-            List<Movie> movies = md.selectName(name, page);
-            jsonMovies = objectMapper.writeValueAsString(movies);
-        }else{
-            PersonDao pd = new PersonDao();
-            List<Person> personList = pd.selectName(name, page);
-            jsonMovies = objectMapper.writeValueAsString(personList);
-        }
-
+        String jsonMovies = objectMapper.writeValueAsString(mwc);
         response.getWriter().write(jsonMovies);
     }
 }

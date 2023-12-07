@@ -63,6 +63,10 @@ public class MoviesDao {
         )).get(0);
     }
 
+    public List<Movie> selectName(String name, Integer Page) {
+        List<Movie> ml = new ArrayList<Movie>();
+        return ml;
+    }
     public List<Movie> SelectByKeyword(String keyword) {
         Keyword wanted = new Keyword();
         wanted.setKeywordName(keyword);
@@ -163,5 +167,4 @@ public class MoviesDao {
         List<Movie> ml = new ArrayList<Movie>();
         return ml;
     }
-
 }
