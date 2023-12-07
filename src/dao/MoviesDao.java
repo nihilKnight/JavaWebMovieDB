@@ -1,7 +1,8 @@
 package dao;
 
-import entity.Person;
+import SQLTemplate.*;
 import entity.Movie;
+import util.SQLUtil;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
