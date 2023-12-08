@@ -1,19 +1,19 @@
 package servlet;
 
-import dao.MoviesDao;
-import entity.Movie;
-
-import javax.servlet.*;
-import javax.servlet.http.*;
-import javax.servlet.annotation.*;
-import java.io.IOException;
-import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.List;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import dao.CrewDao;
+import entity.Crew;
 
-@WebServlet("/movieDetail")
-public class movieDetailServlet extends HttpServlet {
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.List;
+
+@WebServlet("/movieCrew")
+public class CrewServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -27,11 +27,11 @@ public class movieDetailServlet extends HttpServlet {
         response.setContentType("text/html;charset=utf-8");
         Integer movie_id = Integer.valueOf(request.getParameter("movie_id"));
 
-        MoviesDao md = new MoviesDao();
-        Movie movie = md.selectID(movie_id);
+        CrewDao cd = new CrewDao();
+        List<Crew> crewList = cd.SelectByMovieID(movie_id);
 
         ObjectMapper objectMapper = new ObjectMapper();
-        String jsonMovie = objectMapper.writeValueAsString(movie);
-        response.getWriter().write(jsonMovie);
+        String jsonCrew = objectMapper.writeValueAsString(crewList);
+        response.getWriter().write(jsonCrew);
     }
 }

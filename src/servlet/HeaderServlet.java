@@ -1,7 +1,7 @@
 package servlet;
 
-import dao.MoviesDao;
-import entity.Movie;
+import dao.GenreDao;
+import entity.Genre;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -12,8 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-@WebServlet("/movieDetail")
-public class movieDetailServlet extends HttpServlet {
+@WebServlet("/header")
+public class HeaderServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -25,13 +25,16 @@ public class movieDetailServlet extends HttpServlet {
 
         request.setCharacterEncoding("utf-8");
         response.setContentType("text/html;charset=utf-8");
-        Integer movie_id = Integer.valueOf(request.getParameter("movie_id"));
-
-        MoviesDao md = new MoviesDao();
-        Movie movie = md.selectID(movie_id);
 
         ObjectMapper objectMapper = new ObjectMapper();
-        String jsonMovie = objectMapper.writeValueAsString(movie);
-        response.getWriter().write(jsonMovie);
+        String jsonGenres = "";
+
+        List<Genre> genreList = new ArrayList<Genre>();
+        GenreDao gd = new GenreDao();
+        genreList = gd.SelectAll();
+
+        jsonGenres = objectMapper.writeValueAsString(genreList);
+
+        response.getWriter().write(jsonGenres);
     }
 }
