@@ -26,6 +26,8 @@ public class Cast {
         return new SQLUtil.DataInfo("actor_id", SQLUtil.DataType.INT, this.order_of_appearance);
     }
 
+
+
     /** Setters. */
     public void setCastId(int cast_id) {
         this.cast_id = cast_id;

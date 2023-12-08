@@ -63,7 +63,7 @@ public class Condition {
                     case NIN -> " NOT IN ";
                     case EX -> " EXISTS";
                     case NEX -> "NOT EXISTS";
-                    case default -> throw new NullConditionOptionException();
+                    default -> throw new NullConditionOptionException();
                 } +
                 this.requi;
         } catch (NullConditionOptionException ncoe) {

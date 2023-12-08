@@ -34,6 +34,13 @@ public class CastDao {
         return castlist;
     }
 
+    public void Insert(Cast cast){
+
+    }
+
+    public void Update(Cast cast){
+
+    }
     public List<Cast> SelectByMovieID(Integer movie_id){
         List<Cast> personList = new ArrayList<Cast>();
         return personList;
