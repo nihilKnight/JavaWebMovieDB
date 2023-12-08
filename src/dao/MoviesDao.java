@@ -149,8 +149,10 @@ public class MoviesDao {
 
     /** TOP AND MOST RECENT MOVIES*/
     public List<Movie> TopPopular(Integer Page){
-        List<Movie> ml = new ArrayList<Movie>();
-        return ml;
+        return Resolve(SQLUtil.Query(
+                new SelectT(TableName.movie_table)
+                        .toSQL()
+        ));
     }
 
     public List<Movie> TopLatest(Integer Page){
@@ -166,5 +168,14 @@ public class MoviesDao {
     public List<Movie> searchName(String name, Integer Page){
         List<Movie> ml = new ArrayList<Movie>();
         return ml;
+    }
+
+    public List<Movie> selectByPersonID(Integer personId) {
+        List<Movie> ml = new ArrayList<Movie>();
+        return ml;
+    }
+
+    public Movie selectID(Integer movieId) {
+        return new Movie();
     }
 }

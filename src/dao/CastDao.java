@@ -26,7 +26,6 @@ public class CastDao {
                 c.setCharacterName(rs.getString(4));
                 c.setOrderOfAppearance(rs.getInt(5));
                 castlist.add(c);
-
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
