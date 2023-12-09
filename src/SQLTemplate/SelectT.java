@@ -13,7 +13,7 @@ public class SelectT extends SQLT{
     public List<String> columns = new ArrayList<>();
     public List<String> tables = new ArrayList<>();
     public List<String> orders = new ArrayList<>();
-    public Integer limit = null;
+    public String limit;
 
     public SelectT(List<String> tables) {
         this.tables.addAll(tables);
@@ -47,7 +47,11 @@ public class SelectT extends SQLT{
         return this;
     }
     public SelectT Limit(Integer limit) {
-        this.limit = limit;
+        this.limit = String.valueOf(limit);
+        return this;
+    }
+    public SelectT Limit(Integer begin, Integer limit) {
+        this.limit = begin + ", " + limit;
         return this;
     }
 
@@ -71,7 +75,7 @@ public class SelectT extends SQLT{
             this.selectSQL.append(" \nORDER BY ").append(String.join(", ", this.orders));
         }
         if (this.limit != null) {
-            this.selectSQL.append(" \nLIMIT ").append(Integer.toString(this.limit));
+            this.selectSQL.append(" \nLIMIT ").append(this.limit);
         }
         return this.selectSQL.append(';').toString();
     }

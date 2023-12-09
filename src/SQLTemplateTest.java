@@ -1,14 +1,17 @@
 import SQLTemplate.*;
+import dao.MoviesDao;
+import dao.TableName;
+import entity.Genre;
+import entity.GenreMovie;
+import entity.Movie;
 import util.SQLUtil;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
@@ -20,7 +23,8 @@ public class SQLTemplateTest {
 //        TestSelectTSimple();
 //        TestUpdateT();
 //        TestDeleteT();
-        TestSelectTJoin();
+//        TestSelectTJoin();
+        TestSelectTJoinWithExtraConditions();
     }
 
     static class TestDao {
@@ -218,4 +222,37 @@ public class SQLTemplateTest {
         assertNotNull(rs);
     }
 
+    public static void TestSelectTJoinWithExtraConditions() {
+        int page = 1;
+        int genre_id = 35;
+        String expected = """
+                SELECT MOVIES.*\s
+                FROM MOVIES, GENRES, MOVIE_GENRES\s
+                WHERE MOVIES.id = MOVIE_GENRES.movie_id AND GENRES.id = MOVIE_GENRES.genre_id AND GENRES.id = 35\s
+                ORDER BY popularity DESC, release_date DESC\s
+                LIMIT 0, 20;""";
+        String actual = new SelectT(List.of(TableName.movie_table, TableName.genre_table, TableName.movie_genre_table))
+                .AddColumn(TableName.movie_table, "*")
+                .AddOrder(new Movie().getPopularity().attri_name, SelectT.OrderType.DESC)
+                .AddOrder(new Movie().getReleaseDate().attri_name, SelectT.OrderType.DESC)
+                .Limit((page-1) * 20, 20)
+                .AddCondition(new Condition(Condition.Opt.E,
+                        TableName.movie_table, new Movie().getMovieId().attri_name,
+                        TableName.movie_genre_table, new GenreMovie().getMovieId().attri_name))
+                .AddCondition(new Condition(Condition.Opt.E,
+                        TableName.genre_table, new Genre().getId().attri_name,
+                        TableName.movie_genre_table, new GenreMovie().getGenreId().attri_name))
+                .AddCondition(new Condition(Condition.Opt.E, TableName.genre_table,
+                        new Genre().getId().attri_name, String.valueOf(genre_id)))
+                .toSQL();
+        assertEquals(expected, actual);
+
+        /** Test whether the Query result is not null.*/
+        List<Movie> ml = MoviesDao.QueryAndResolve(actual);
+        System.out.printf("|%-50s\t|popularity\t\t|revenue\t\t|release_date\t\t\t\t\t\t|\n", "title");
+        System.out.println(new String(new char[121]).replace('\0', '-'));
+        for (Movie m : ml) {
+            System.out.printf("|%-50s\t|%.6f\t\t|%d\t\t|%s\t\t|\n", m.title, m.popularity, m.revenue, m.release_date);
+        }
+    }
 }

@@ -6,8 +6,9 @@ import util.SQLUtil;
 public class Condition {
     public enum Opt{
         /** Greater, Less, Not Greater, Not Less, Equal, Not Equal
-         ** In, Not In, Exists, Not Exists. */
-        G, L, NG, NL, E, NE, IN, NIN, EX, NEX
+         ** In, Not In, Exists, Not Exists.
+         ** Like */
+        G, L, NG, NL, E, NE, IN, NIN, EX, NEX, LI
     }
     // Attribute name.
     public String attri;
@@ -61,8 +62,9 @@ public class Condition {
                     case NE -> " != ";
                     case IN -> " IN ";
                     case NIN -> " NOT IN ";
-                    case EX -> " EXISTS";
-                    case NEX -> "NOT EXISTS";
+                    case EX -> " EXISTS ";
+                    case NEX -> " NOT EXISTS ";
+                    case LI -> " LIKE ";
                     case default -> throw new NullConditionOptionException();
                 } +
                 this.requi;

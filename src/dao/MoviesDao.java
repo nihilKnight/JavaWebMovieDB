@@ -2,8 +2,11 @@ package dao;
 
 import SQLTemplate.*;
 import entity.*;
+import util.DBConnector;
 import util.SQLUtil;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -11,13 +14,17 @@ import java.util.List;
 
 public class MoviesDao {
 
-    public List<Movie> Resolve(ResultSet rs) {
+    public static List<Movie> QueryAndResolve(String sql) {
         List<Movie> ml = new ArrayList<>();
+        Connection conn = DBConnector.getConnection();
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
 
-        /** Resolve SQL results. */
-        while (true) {
-            try {
-                if (! rs.next()) break;
+        try {
+            pstmt = conn.prepareStatement(sql);
+            rs = pstmt.executeQuery();
+
+            while (rs.next()) {
                 Movie m = new Movie();
                 m.setMovieId(rs.getInt(1));
                 m.setBudget(rs.getInt(2));
@@ -35,43 +42,41 @@ public class MoviesDao {
                 m.setVoteAverage(rs.getDouble(14));
                 m.setVoteCount(rs.getInt(15));
                 ml.add(m);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
             }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            DBConnector.closeConnection(conn, pstmt, rs);
         }
 
         return ml;
     }
 
     public List<Movie> SelectAll(Integer limit) {
-        return Resolve(SQLUtil.Query(
+        return QueryAndResolve(
                 new SelectT(TableName.movie_table)
                         .AddOrder(new Movie().getMovieId().attri_name)
                         .Limit(limit)
                         .toSQL()
-        ));
+        );
     }
 
     public Movie SelectById(Integer id) {
         Movie wanted = new Movie();
         wanted.setMovieId(id);
 
-        return Resolve(SQLUtil.Query(
+        return QueryAndResolve(
                 new SelectT(TableName.movie_table)
                         .AddCondition(new Condition(Condition.Opt.E, wanted.getMovieId()))
                         .toSQL()
-        )).get(0);
+        ).get(0);
     }
 
-    public List<Movie> selectName(String name, Integer Page) {
-        List<Movie> ml = new ArrayList<Movie>();
-        return ml;
-    }
     public List<Movie> SelectByKeyword(String keyword) {
         Keyword wanted = new Keyword();
         wanted.setKeywordName(keyword);
 
-        return Resolve(SQLUtil.Query(
+        return QueryAndResolve(
                 new SelectT(List.of(TableName.keyword_table, TableName.movie_keyword_table, TableName.movie_table))
                         .AddColumn(TableName.movie_table, "*")
                         .AddCondition(new Condition(Condition.Opt.E,
@@ -84,14 +89,14 @@ public class MoviesDao {
                         ))
                         .AddCondition(new Condition(Condition.Opt.E, wanted.getKeywordName()))
                         .toSQL()
-        ));
+        );
     }
 
     public List<Movie> SelectByCast(Person p) {
-        return Resolve(SQLUtil.Query(
+        return QueryAndResolve(
                 new SelectT(List.of(TableName.person_table, TableName.cast_table, TableName.movie_table))
                         .toSQL()
-        ));
+        );
     }
 
     public int Insert(Movie m) {
@@ -148,34 +153,66 @@ public class MoviesDao {
     }
 
     /** TOP AND MOST RECENT MOVIES*/
-    public List<Movie> TopPopular(Integer Page){
-        return Resolve(SQLUtil.Query(
+    public List<Movie> TopPopular(Integer page){
+        return QueryAndResolve(
                 new SelectT(TableName.movie_table)
+                        .AddOrder(new Movie().getPopularity().attri_name, SelectT.OrderType.DESC)
+                        .Limit((page-1) * 20, 20)
                         .toSQL()
-        ));
+        );
     }
 
-    public List<Movie> TopLatest(Integer Page){
-        List<Movie> ml = new ArrayList<Movie>();
-        return ml;
+    public List<Movie> TopLatest(Integer page){
+        return QueryAndResolve(
+                new SelectT(TableName.movie_table)
+                        .AddOrder(new Movie().getReleaseDate().attri_name, SelectT.OrderType.DESC)
+                        .Limit((page-1) * 20, 20)
+                        .toSQL()
+        );
     }
 
-    public List<Movie> getGenre(Integer genre_id, Integer Page) {
-        List<Movie> ml = new ArrayList<Movie>();
-        return ml;
+    public List<Movie> getGenre(Integer genre_id, Integer page) {
+        return QueryAndResolve(
+                new SelectT(List.of(TableName.movie_table, TableName.genre_table, TableName.movie_genre_table))
+                        .AddColumn(TableName.movie_table, "*")
+                        .AddOrder(new Movie().getPopularity().attri_name, SelectT.OrderType.DESC)
+                        .AddOrder(new Movie().getReleaseDate().attri_name, SelectT.OrderType.DESC)
+                        .Limit((page-1) * 20, 20)
+                        .AddCondition(new Condition(Condition.Opt.E,
+                                TableName.movie_table, new Movie().getMovieId().attri_name,
+                                TableName.movie_genre_table, new GenreMovie().getMovieId().attri_name))
+                        .AddCondition(new Condition(Condition.Opt.E,
+                                TableName.genre_table, new Genre().getId().attri_name,
+                                TableName.movie_genre_table, new GenreMovie().getGenreId().attri_name))
+                        .AddCondition(new Condition(Condition.Opt.E, TableName.genre_table,
+                                new Genre().getId().attri_name, String.valueOf(genre_id)))
+                        .toSQL()
+        );
     }
 
-    public List<Movie> searchName(String name, Integer Page){
-        List<Movie> ml = new ArrayList<Movie>();
-        return ml;
+    public List<Movie> selectName(String name, Integer page) {
+        Movie wanted = new Movie();
+        /** Movie title contains {name}. */
+        wanted.setTitle("'%" + name + "'%");
+        return QueryAndResolve(
+                new SelectT(TableName.movie_table)
+                        .AddCondition(new Condition(Condition.Opt.LI, wanted.getTitle()))
+                        .toSQL()
+        );
     }
 
     public List<Movie> selectByPersonID(Integer personId) {
-        List<Movie> ml = new ArrayList<Movie>();
-        return ml;
+
     }
 
     public Movie selectID(Integer movieId) {
-        return new Movie();
+        Movie wanted = new Movie();
+        wanted.setMovieId(movieId);
+        return QueryAndResolve(
+                new SelectT(TableName.movie_table)
+                        .AddCondition(new Condition(Condition.Opt.E, wanted.getMovieId()))
+                        .toSQL()
+        ).get(0);
     }
+
 }
