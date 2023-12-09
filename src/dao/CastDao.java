@@ -2,7 +2,6 @@ package dao;
 
 import SQLTemplate.*;
 import entity.Cast;
-import entity.Person;
 import util.DBConnector;
 import util.SQLUtil;
 
@@ -44,13 +43,30 @@ public class CastDao {
         return cl;
     }
 
-    public void Insert(Cast cast){
-
+    public int Insert(Cast c){
+        return SQLUtil.Update(
+                new InsertT(TableName.cast_table)
+                        .AddKeyValuePair(c.getMovieId())
+                        .AddKeyValuePair(c.getCastId())
+                        .AddKeyValuePair(c.getActorId())
+                        .AddKeyValuePair(c.getCharacterName())
+                        .AddKeyValuePair(c.getOrderOfAppearance())
+                        .toSQL()
+        );
     }
 
-    public void Update(Cast cast){
-
+    public int Update(Cast c){
+        return SQLUtil.Update(
+                new UpdateT(TableName.cast_table)
+                        .AddKeyValuePair(c.getActorId())
+                        .AddKeyValuePair(c.getCharacterName())
+                        .AddKeyValuePair(c.getOrderOfAppearance())
+                        .AddCondition(new Condition(Condition.Opt.E, c.getMovieId()))
+                        .AddCondition(new Condition(Condition.Opt.E, c.getCastId()))
+                        .toSQL()
+        );
     }
+
     public List<Cast> SelectByMovieID(Integer movie_id){
         Cast wanted = new Cast();
         wanted.setMovieId(movie_id);
