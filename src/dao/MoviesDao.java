@@ -61,17 +61,6 @@ public class MoviesDao {
         );
     }
 
-    public Movie SelectById(Integer id) {
-        Movie wanted = new Movie();
-        wanted.setMovieId(id);
-
-        return QueryAndResolve(
-                new SelectT(TableName.movie_table)
-                        .AddCondition(new Condition(Condition.Opt.E, wanted.getMovieId()))
-                        .toSQL()
-        ).get(0);
-    }
-
     public List<Movie> SelectByKeyword(String keyword) {
         Keyword wanted = new Keyword();
         wanted.setKeywordName(keyword);
@@ -91,12 +80,8 @@ public class MoviesDao {
                         .toSQL()
         );
     }
-
-    public List<Movie> SelectByCast(Person p) {
-        return QueryAndResolve(
-                new SelectT(List.of(TableName.person_table, TableName.cast_table, TableName.movie_table))
-                        .toSQL()
-        );
+    public int Update(Movie m){
+        return 0;
     }
 
     public int Insert(Movie m) {
@@ -172,6 +157,8 @@ public class MoviesDao {
     }
 
     public List<Movie> getGenre(Integer genre_id, Integer page) {
+        Genre wanted = new Genre();
+        wanted.setId(genre_id);
         return QueryAndResolve(
                 new SelectT(List.of(TableName.movie_table, TableName.genre_table, TableName.movie_genre_table))
                         .AddColumn(TableName.movie_table, "*")
@@ -184,8 +171,7 @@ public class MoviesDao {
                         .AddCondition(new Condition(Condition.Opt.E,
                                 TableName.genre_table, new Genre().getId().attri_name,
                                 TableName.movie_genre_table, new GenreMovie().getGenreId().attri_name))
-                        .AddCondition(new Condition(Condition.Opt.E, TableName.genre_table,
-                                new Genre().getId().attri_name, String.valueOf(genre_id)))
+                        .AddCondition(new Condition(Condition.Opt.E, TableName.genre_table, wanted.getId()))
                         .toSQL()
         );
     }
@@ -196,13 +182,35 @@ public class MoviesDao {
         wanted.setTitle("'%" + name + "'%");
         return QueryAndResolve(
                 new SelectT(TableName.movie_table)
+                        .AddOrder(wanted.getPopularity().attri_name, SelectT.OrderType.DESC)
+                        .AddOrder(wanted.getReleaseDate().attri_name, SelectT.OrderType.DESC)
+                        .Limit((page-1) * 20, 20)
                         .AddCondition(new Condition(Condition.Opt.LI, wanted.getTitle()))
                         .toSQL()
         );
     }
 
     public List<Movie> selectByPersonID(Integer personId) {
-
+        Cast wanted = new Cast();
+        wanted.setActorId(personId);
+        Crew orWanted = new Crew();
+        orWanted.setCrewMemberId(personId);
+        return QueryAndResolve(
+                SelectT.Union(List.of(
+                        new SelectT(List.of(TableName.movie_table, TableName.cast_table))
+                                .AddColumn(TableName.movie_table, "*")
+                                .AddCondition(new Condition(Condition.Opt.E,
+                                        TableName.movie_table, new Movie().getMovieId().attri_name,
+                                        TableName.cast_table, new Cast().getMovieId().attri_name))
+                                .AddCondition(new Condition(Condition.Opt.E, wanted.getActorId())),
+                        new SelectT(List.of(TableName.movie_table, TableName.crew_table))
+                                .AddColumn(TableName.movie_table, "*")
+                                .AddCondition(new Condition(Condition.Opt.E,
+                                        TableName.movie_table, new Movie().getMovieId().attri_name,
+                                        TableName.crew_table, new Crew().getMovieId().attri_name))
+                                .AddCondition(new Condition(Condition.Opt.E, orWanted.getCrewMemberId()))
+                ))
+        );
     }
 
     public Movie selectID(Integer movieId) {

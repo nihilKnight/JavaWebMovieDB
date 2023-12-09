@@ -44,13 +44,30 @@ public class CastDao {
         return cl;
     }
 
+    public void Insert(Cast cast){
+
+    }
+
+    public void Update(Cast cast){
+
+    }
     public List<Cast> SelectByMovieID(Integer movie_id){
-        List<Cast> personList = new ArrayList<Cast>();
-        return personList;
+        Cast wanted = new Cast();
+        wanted.setMovieId(movie_id);
+        return QueryAndResolve(
+                new SelectT(TableName.cast_table)
+                        .AddCondition(new Condition(Condition.Opt.E, wanted.getMovieId()))
+                        .toSQL()
+        );
     }
 
     public Cast SelectByPersonID(Integer person_id){
-        Cast cast = new Cast();
-        return cast;
+        Cast wanted = new Cast();
+        wanted.setActorId(person_id);
+        return QueryAndResolve(
+                new SelectT(TableName.cast_table)
+                        .AddCondition(new Condition(Condition.Opt.E, wanted.getActorId()))
+                        .toSQL()
+        ).get(0);
     }
 }
