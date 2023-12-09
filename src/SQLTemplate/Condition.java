@@ -32,6 +32,11 @@ public class Condition {
         this.opt = opt;
         this.requi = SQLUtil.DataParser(di);
     }
+    public Condition(Opt opt, String table, SQLUtil.DataInfo di) {
+        this.attri = table + '.' + di.attri_name;
+        this.opt = opt;
+        this.requi = SQLUtil.DataParser(di);
+    }
     public Condition(Opt opt, String attri, SelectT st) {
         this.attri = attri;
         this.opt = opt;

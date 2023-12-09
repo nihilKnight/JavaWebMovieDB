@@ -1,7 +1,6 @@
 package dao;
 
 import SQLTemplate.*;
-import entity.Movie;
 import entity.Person;
 import util.DBConnector;
 import util.SQLUtil;
@@ -41,9 +40,16 @@ public class PersonDao {
         return pl;
     }
 
-    public List<Person> selectName(String name, Integer Page){
-        List<Person> personList = new ArrayList<Person>();
-        return personList;
+    public List<Person> selectName(String name, Integer page){
+        Person wanted = new Person();
+        /** Person name contains {name} */
+        wanted.setName("'%" + name + "'%");
+        return QueryAndResolve(
+                new SelectT(TableName.person_table)
+                        .Limit((page-1) * 20, 20)
+                        .AddCondition(new Condition(Condition.Opt.E, wanted.getName()))
+                        .toSQL()
+        );
     }
 
     public List<Person> SelectAll(Integer limit) {
