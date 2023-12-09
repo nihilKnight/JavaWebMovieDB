@@ -80,6 +80,9 @@ public class MoviesDao {
                         .toSQL()
         );
     }
+    public int Update(Movie m){
+        return 0;
+    }
 
     public int Insert(Movie m) {
         return SQLUtil.Update(
