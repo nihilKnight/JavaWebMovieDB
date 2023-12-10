@@ -5,20 +5,21 @@
 
   const id = $page.url.pathname.split('/')[2]
 
-  let movie
+  let movie;
+  let castList = [];
+  let crewList = [];
 
   async function load() {
     movie = await fetch(
 			`${API}/movie/${id}${KEY}&language=en-US`
-		).then(res => res.json())
+		).then(res => res.json());
+    const actors = await fetch(
+      `https://api.themoviedb.org/3/movie/${id}/credits?api_key=799c0bd0b2baaecc6d9301fadfaea7f7&language=en-US&page=1`
+    ).then(resPerson => resPerson.json());
+    castList = actors.cast || []
+    crewList = actors.crew || []
   }
-
   onMount(() => load())
-
-  function getYearFromDate(dateString) {
-    const date = new Date(dateString);
-    return date.getFullYear();
-  }
 </script>
 
 <!-- 标题设置 -->
@@ -27,152 +28,167 @@
 </svelte:head>
 
 {#if movie}
-  <section class="movie-section">
-    <div class="movie-poster">
-      <img src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`} alt="Poster">
+<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 my-6">
+  <div class="lg:col-span-6 flex justify-between items-center">
+    <h2 class="text-4xl text-black font-extrabold my-2">
+      {movie.title}
+    </h2>
+    <p class="text-3xl text-amber-500 font-extrabold">{movie.vote_average.toFixed(1)}<span class="text-black">/10</span></p>
+  </div>
+  
+  <div class="lg:col-span-3">
+    <img src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`} alt="Poster" class="rounded-md">
+  </div>
+  
+  <div class="lg:col-span-3 ml-4">
+    <h3 class="text-2xl text-black mb-4 font-semibold">Infomation</h3>
+    <table class="table-fixed">
+      <tbody class="text-left">
+        <tr class="border-b-8 border-transparent">
+          <th class="w-32">
+            Genres
+          </th>
+          <td class="">
+            {#each movie.genres as genre}
+              <a href={`/genre/${genre.id}`} class="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-sm font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10 mr-2">
+                {genre.name}
+              </a>
+            {/each}
+          </td>
+        </tr>
+        <tr class="border-b-8 border-transparent">
+          <th class="w-32">
+            Companies
+          </th>
+          <td class="">
+          { movie.production_companies.map(item => item.name).join(', ') }
+          </td>
+        </tr>
+
+        <tr class="border-y-8 border-transparent">
+          <th class="">
+            Countries
+          </th>
+          <td class="">
+          { movie.production_countries.map(item => item.name).join(', ') }
+          </td>
+        </tr>
+
+        <tr class="border-y-8 border-transparent">
+          <th class="">
+            Spoken Languages
+          </th>
+          <td class="">
+          { movie.spoken_languages?.map(item => item.name).join(', ') }
+          </td>
+        </tr>
+
+        <tr class="border-y-8 border-transparent">
+          <th class="">
+            Genres
+          </th>
+          <td class="">
+          { movie.genres.map(item => item.name).join(', ') }
+          </td>
+        </tr>
+
+        <tr class="border-y-8 border-transparent">
+          <th class="">
+            Release Date
+          </th>
+          <td class="">
+            {movie.release_date}
+          </td>
+        </tr>
+        
+        <tr class="border-y-8 border-transparent">
+          <th class="">
+            Runtime
+          </th>
+          <td class="">
+            {movie.runtime} minutes
+          </td>
+        </tr>
+
+        <tr class="border-y-8 border-transparent">
+          <th class="">
+            Budget
+          </th>
+          <td class="">
+            R${movie.budget.toFixed(2)}
+          </td>
+        </tr>
+
+        <tr class="border-y-8 border-transparent">
+          <th class="">
+            Revenue
+          </th>
+          <td class="">
+            R${movie.revenue.toFixed(2)}
+          </td>
+        </tr>
+
+        <tr class="border-t-8 border-transparent">
+          <th class="">
+            Vote Count
+          </th>
+          <td class="">
+            {movie.vote_count}
+          </td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+
+  <div class="lg:col-span-2">
+    <h3 class="text-2xl text-black font-semibold">Overview</h3>
+    <p class="my-4">{movie.overview}</p>
+  </div>
+  
+  <div class="lg:col-span-2 ml-4">
+    <h3 class="text-2xl text-black font-semibold">Cast</h3>
+    <div class="my-4 overflow-y-auto max-h-96">
+      {#each castList as actor}
+        <a href={`/person/${actor.id}`} class="">
+          <div class="flex gap-4 items-center mb-4">
+              <img 
+                  src={`https://image.tmdb.org/t/p/original${actor.profile_path}`} 
+                  alt={actor.name}
+                  class="w-[56px] h-[56px] object-cover rounded-full"
+              >
+              <div class="flex flex-col gap-1">
+                <h2 class="text-[18px] font-bold uppercase">{actor.character}</h2>
+                <h3 class="text-1 text-amber-500 font-normal">{actor.name}</h3>  
+              </div>
+          </div>
+        </a>
+      {/each}
     </div>
-    
-    <div class="movie-info">
-      <h2 class="movie-title">
-        {movie.title}
-        <span class="movie-rating">&#9733;{movie.vote_average.toFixed(1)}</span>
-      </h2>
-      <p class="movie-overview">{movie.overview}</p>
+  </div>
+
+  <div class="lg:col-span-2 ml-4">
+    <h3 class="text-2xl text-black font-semibold">Crew</h3>
+    <div class="my-4 overflow-y-auto max-h-96">
+      {#each crewList as staff}
+        <a href={`/person/${staff.id}`} class="">
+          <div class="flex gap-4 items-center mb-4">
+              <img 
+                  src={`https://image.tmdb.org/t/p/original${staff.profile_path}`} 
+                  alt={staff.name}
+                  class="w-[56px] h-[56px] object-cover rounded-full"
+              >
+              <div class="flex flex-col gap-1">
+                <h2 class="text-[18px] font-bold uppercase">{staff.job}</h2>
+                <h3 class="text-1 text-amber-500 font-normal">{staff.name}</h3>  
+              </div>
+          </div>
+        </a>
+      {/each}
     </div>
+  </div>
+</section>
 
-    <div class="movie-details">
-      <table class="table-fixed">
-        <tbody class="text-left">
-          <tr class="border-b-8">
-            <th>Companies</th>
-            <td>{ movie.production_companies.map(item => item.name).join(', ') }</td>
-          </tr>
-
-          <tr class="border-y-8">
-            <th>Countries</th>
-            <td>{ movie.production_countries.map(item => item.name).join(', ') }</td>
-          </tr>
-
-          <tr class="border-y-8">
-            <th>Spoken Languages</th>
-            <td>{ movie.spoken_languages?.map(item => item.name).join(', ') }</td>
-          </tr>
-
-          <tr class="border-y-8">
-            <th>Genres</th>
-            <td>{ movie.genres.map(item => item.name).join(', ') }</td>
-          </tr>
-
-          <tr class="border-y-8">
-            <th>Release Date</th>
-            <td>{movie.release_date}</td>
-          </tr>
-          
-          <tr class="border-y-8">
-            <th>Runtime</th>
-            <td>{movie.runtime} minutes</td>
-          </tr>
-
-          <tr class="border-y-8">
-            <th>Budget</th>
-            <td>R${movie.budget.toFixed(2)}</td>
-          </tr>
-
-          <tr class="border-y-8">
-            <th>Revenue</th>
-            <td>R${movie.revenue.toFixed(2)}</td>
-          </tr>
-
-          <tr class="border-t-8">
-            <th>Vote Count</th>
-            <td>{movie.vote_count}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
 {:else}
-  <h2 class="loading-message">Loading...</h2>
+<h2 class="m-auto text-2xl">Loading</h2>
 {/if}
-
-<style>
-  .movie-poster {
-    order: 1;
-    width: 40%;
-    margin: auto; /* 将图像容器水平居中 */
-    border-radius: 1rem;
-    overflow: hidden;
-  }
-
-  .movie-poster img {
-    width: 100%;
-    border-radius: 1rem;
-  }
-
-  .movie-info {
-    order: 2;
-  }
-
-  .movie-details {
-    order: 3;
-  }
-
-  .movie-title {
-    font-size: 1.875rem; /* 对应 text-3xl */
-    font-weight: 600; /* 对应 font-semibold */
-    color: rgba(59, 130, 246, 0.8); /* 对应 text-blue-500/80 */
-    margin-bottom: 1rem; /* 对应 my-4 */
-  }
-
-  .movie-rating {
-    color: #ffd700; /* 对应 text-yellow-500 */
-    font-size: 1.125rem; /* 对应 text-2xl */
-    margin-left: 0.5rem; 
-  }
-
-  .movie-overview {
-    margin-top: 1rem; 
-    margin-bottom: 1rem; 
-  }
-
-  .table-fixed {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 1rem; 
-  }
-
-  .table-fixed th,
-  .table-fixed td {
-    border: 2px solid #e5e5e5; 
-    padding: 0.5rem; 
-  }
-
-  .table-fixed th {
-    width: 8rem; 
-  }
-
-  .table-fixed tr:nth-child(even) {
-    background-color: #f9f9f9; 
-  }
-
-  .table-fixed tr.border-b-8 {
-    border-bottom: 8px solid transparent; 
-  }
-
-  .table-fixed tr.border-y-8 {
-    border-top: 8px solid transparent; 
-    border-bottom: 8px solid transparent; 
-  }
-
-  .table-fixed tr.border-t-8 {
-    border-top: 8px solid transparent; 
-  }
-
-  .loading-message {
-    margin: 0 auto; /* 对应 m-auto */
-    font-size: 1.5rem; /* 对应 text-2xl */
-  }
-</style>
-
-
-

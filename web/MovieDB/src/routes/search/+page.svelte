@@ -44,7 +44,6 @@
     const data = await fetch(
 			`${API}/search/${media}${KEY}&page=${page}&language=en-US&query=${query}`
 		).then(res => res.json())
-    console.log(data)
     results = (data.results)
   }
 
@@ -56,131 +55,47 @@
 	<title>Search - MovieDB</title>
 </svelte:head>
 
-<div class="search-container">
-  <h2 class="search-title">Search</h2>
-  <select name="media" id="media" bind:value={media} on:change={load} class="search-select">
-    <option value="movie">Movies</option>
-    <option value="person">Person</option>
+<div class="flex align-center my-6 space-x-4">
+  <h2 class="text-2xl">Search</h2>
+  <select name="media" id="media" bind:value={media} on:change={load}  class="bg-gray-200 dark:bg-gray-800 rounded-md px-2 py-1">
+    <option value="movie" class="">Movies</option>
+    <option value="person" class="">Person</option>
   </select>
-  <form on:submit|preventDefault={load} class="search-form">
-    <input type="text" class="search-input" placeholder="Search..." bind:value={query}>
+  <form on:submit|preventDefault={load} class="">
+    <input type="text" class="px-2 py-1 bg-gray-200 dark:bg-gray-800 focus:ring-2 ring-offset-2 
+      ring-offset-white placeholder:italic dark:ring-offset-gray-900 ring-blue-500/50 rounded-md outline-none"
+      placeholder="Search..." bind:value={query}
+    >
   </form>
 </div>
 
-<div class="results-container">
-  {#if results}
-    <div class="grid-container">
-      {#each results as show (show.id)}
-        <MovieCard item={show} media={media} />
-      {/each}
-    </div>
-  {:else} 
-    <h2 class="waiting-text">Waiting for search...</h2>
-  {/if}
-</div>
 
-<div class="pagination-container">
-  <div class="button-container">
-    <button on:click={() => changePage(-1)} class="prev-button">
+{#if results}
+  <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-4 mb-6 pb-2">
+    {#each results as show (show.id)}
+      <MovieCard item={show} media={media} />
+    {/each}
+  </div>
+{:else} 
+  <h2 class="m-auto text-2xl pb-8">Waiting for search...</h2>
+{/if}
+
+
+<div class="flex justify-center mb-6">
+  <div class="overflow-hidden rounded-md space-x-0">
+    <button on:click={() => changePage(-1)} class="px-4 h-10 bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 hover:dark:bg-gray-700">
       Prev
     </button>
     {#each pages as pag (pag)}
-    <button on:click={() => selectPage(pag)} class="page-button {pag === page ? 'active-page' : ''}">
+    <button on:click={() => selectPage(pag)} 
+      class="w-10 h-10
+       {pag === page ? "bg-blue-400/80" : "bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 hover:dark:bg-gray-700"}"
+    >
       {pag}
     </button>
     {/each}
-    <button on:click={() => changePage(1)} class="next-button">
+    <button on:click={() => changePage(1)} class="px-4 h-10 bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 hover:dark:bg-gray-700">
       Next
     </button>
   </div>
 </div>
-
-<style>
-  .search-container {
-  display: flex;
-  align-items: center;
-  margin-bottom: 1.5rem;
-  gap: 1rem;
-}
-
-.search-title {
-  font-size: 1.5rem;
-}
-
-.search-select {
-  background-color: #E5E7EB;
-  border-radius: 0.25rem;
-  padding: 0.25rem 0.5rem;
-}
-
-.search-form {
-  display: inline-block;
-}
-
-.search-input {
-  padding: 0.25rem 0.5rem;
-  background-color: #E5E7EB;
-  outline: none;
-  border-radius: 0.25rem;
-}
-
-.results-container {
-  margin-bottom: 1.5rem;
-}
-
-.grid-container {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem;
-}
-
-@media (min-width: 640px) {
-  .grid-container {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-}
-
-@media (min-width: 1024px) {
-  .grid-container {
-    grid-template-columns: repeat(6, minmax(0, 1fr));
-  }
-}
-
-.waiting-text {
-  margin: auto;
-  font-size: 1.5rem;
-}
-
-.pagination-container {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 1.5rem;
-}
-
-.button-container {
-  overflow: hidden;
-  border-radius: 0.25rem;
-  display: flex;
-}
-
-.prev-button,
-.next-button,
-.page-button {
-  padding: 0.5rem 1rem;
-  background-color: #E5E7EB;
-  color: #000000;
-  transition: background-color 0.3s, color 0.3s;
-}
-
-.prev-button:hover,
-.next-button:hover,
-.page-button:hover {
-  background-color: #D1D5DB;
-}
-
-.active-page {
-  background-color: #FFD700;
-  color: #FFFFFF;
-}
-
-</style>
