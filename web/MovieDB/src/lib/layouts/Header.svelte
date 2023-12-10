@@ -1,9 +1,10 @@
 <script>
+  import AGenre from "../components/AGenre.svelte";
   import A from "../components/A.svelte";
   import AH from "../components/AH.svelte";
   import Theme from "../components/Theme.svelte";
 
-  let navHidden = true
+  let navHidden = true;
 
   function showNav() {
     if (navHidden) {
@@ -15,82 +16,46 @@
   }
 </script>
 
-<div class="header">
-  <h1 class="logo">MovieDB</h1>
+<div class="bg-gray-200 dark:bg-gray-800 h-20 flex justify-between place-items-center px-4 sm:px-6">
+  <a href="/" class="text-3xl font-semibold hover:text-blue-500">
+    Movie<span class="text-blue-500">DB</span>
+  </a>
 
-  <nav class="desktop-nav">
+  <nav class="hidden sm:block text-lg font-semibold">
     <A props={{name: "Home", link:"/"}} />
     <A props={{name: "Search", link:"/search"}} />
-    <div class="theme-switcher">
+    <AGenre props={{name: "Genre", link:"#"}} />
+    <div class="inline-block hover:bg-gray-300 dark:hover:bg-gray-700 rounded-md">
       <Theme />
     </div>
   </nav>
   
-  <nav id="nav-res" class="mobile-nav">
-    <button on:click={showNav}>
+  <nav id="nav-res" class="hidden sm:hidden top-12 left-0 sm:h-auto p-3
+  sm:w-auto w-full justify-between bg-gray-200 dark:bg-gray-800"
+  >
+    <button on:click={showNav} class="text-left w-full">
       <AH props={{name: "Home", link:"/"}} />
     </button>
-    <button on:click={showNav}>
+    <button on:click={showNav} class="text-left w-full">
       <AH props={{name: "Search", link:"/search"}} />
     </button>
-    <button on:click={showNav} class="theme-switcher">
+    <button on:click={showNav} class="text-left w-full">
+      <AGenre props={{name: "Genre", link:"#"}} />
+    </button>
+    <button on:click={showNav} class="w-full hover:bg-gray-300 dark:hover:bg-gray-700 rounded-md">
       <Theme />
     </button>
   </nav>
   
+  <button 
+    on:click={showNav}
+    type="button" 
+    class="block sm:hidden w-10 h-[80%] hover:bg-gray-300 dark:hover:bg-gray-700 rounded-md"
+  >
+    {#if navHidden}
+      <span class="text-4xl my-4">&#8285;</span>
+    {:else}
+      <span class="text-3xl">&#9747;</span>
+    {/if}
+  </button>
 </div>
-
-<style>
-  .header {
-    background-color: rgb(229, 231, 235); /* Set your desired background color */
-    height: 12vh;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 1rem;
-  }
-
-  .logo {
-    font-size: 2rem;
-  }
-
-  .desktop-nav{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .theme-switcher {
-    display: inline-block;
-    cursor: pointer;
-    padding: 0.5rem;
-    border-radius: 0.25rem;
-    &:hover {
-      background-color: #ddd; /* Set your desired hover background color */
-    }
-  }
-
-  .mobile-nav {
-    display: none;
-  }
-
-  /* Media query to show mobile nav */
-  @media screen and (max-width: 600px) {
-    .mobile-nav {
-      display: flex;
-      flex-direction: column;
-      position: absolute;
-      top: 12vh;
-      left: 0;
-      width: 100%;
-      background-color: #ccc; /* Set your desired background color */
-      padding: 1rem;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      z-index: 1;
-    }
-    .mobile-nav button {
-      margin-bottom: 1rem;
-      text-align: left;
-    }
-  }
-</style>
