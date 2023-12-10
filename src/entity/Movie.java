@@ -36,7 +36,7 @@ public class Movie {
 
     /** Getters which return the attribute name, attribute type in MySQL, and the exact value. */
     public SQLUtil.DataInfo getMovieId() {
-        return new SQLUtil.DataInfo("movie_id", SQLUtil.DataType.BIGINT, this.movie_id);
+        return new SQLUtil.DataInfo("id", SQLUtil.DataType.BIGINT, this.movie_id);
     }
     public SQLUtil.DataInfo getBudget() {
         return new SQLUtil.DataInfo("budget", SQLUtil.DataType.BIGINT, this.budget);
@@ -104,7 +104,7 @@ public class Movie {
         this.popularity = popularity;
     }
     public void setReleaseDate(String release_date) {
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         try {
             this.release_date = df.parse(release_date);
         } catch (ParseException e) {

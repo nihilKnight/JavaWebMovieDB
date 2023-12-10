@@ -63,7 +63,7 @@ public class SQLUtil {
                 case DATE -> {
                     data = '\'' + new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(di.date_value) + '\'';
                 }
-                case default -> {
+                default -> {
                     throw new NullDataTypeException();
                 }
             }

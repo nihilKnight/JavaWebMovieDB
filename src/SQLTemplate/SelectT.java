@@ -13,7 +13,7 @@ public class SelectT extends SQLT{
     public List<String> columns = new ArrayList<>();
     public List<String> tables = new ArrayList<>();
     public List<String> orders = new ArrayList<>();
-    public Integer limit = null;
+    public String limit;
 
     public SelectT(List<String> tables) {
         this.tables.addAll(tables);
@@ -27,6 +27,15 @@ public class SelectT extends SQLT{
     /** TODO: Write methods enable MySQL expressions (like arithmetics and functions), and alias ("AS"). */
     /** TODO: Write methods enable grouping functions (MAX, MIN, AVG). */
 
+    public SelectT AddCondition(Condition condition) {
+        this.conditions.add(condition.toString());
+        return this;
+    }
+
+    public SelectT AddCondition(String condition) {
+        this.conditions.add(condition);
+        return this;
+    }
     public SelectT AddColumn(String column) {
         this.columns.add(column);
         return this;
@@ -47,7 +56,11 @@ public class SelectT extends SQLT{
         return this;
     }
     public SelectT Limit(Integer limit) {
-        this.limit = limit;
+        this.limit = String.valueOf(limit);
+        return this;
+    }
+    public SelectT Limit(Integer begin, Integer limit) {
+        this.limit = begin + ", " + limit;
         return this;
     }
 
@@ -71,9 +84,40 @@ public class SelectT extends SQLT{
             this.selectSQL.append(" \nORDER BY ").append(String.join(", ", this.orders));
         }
         if (this.limit != null) {
-            this.selectSQL.append(" \nLIMIT ").append(Integer.toString(this.limit));
+            this.selectSQL.append(" \nLIMIT ").append(this.limit);
         }
         return this.selectSQL.append(';').toString();
+    }
+
+    public static String Union(List<SelectT> stl) {
+        List<String> sqls = new ArrayList<>();
+        for (SelectT st : stl) {
+            StringBuffer sql = new StringBuffer("(\nSELECT ");
+            if (st.columns.isEmpty()) {
+                sql.append("*");
+            } else {
+                sql.append(String.join(", ", st.columns));
+            }
+            sql.append(" \nFROM ");
+            if (st.tables.isEmpty()) {
+                sql.append(st.table);
+            } else {
+                sql.append(String.join(", ", st.tables));
+            }
+            if (! st.conditions.isEmpty()) {
+                sql.append(" \nWHERE ").append(String.join(" AND ", st.conditions));
+            }
+            if (! st.orders.isEmpty()) {
+                sql.append(" \nORDER BY ").append(String.join(", ", st.orders));
+            }
+            if (st.limit != null) {
+                sql.append(" \nLIMIT ").append(st.limit);
+            }
+            sql.append("\n)");
+            sqls.add(sql.toString());
+        }
+
+        return String.join("\nUNION\n", sqls) + ';';
     }
 
 }
