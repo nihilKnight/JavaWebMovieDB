@@ -1,10 +1,12 @@
 package dao;
 
 import SQLTemplate.*;
-import entity.Movie;
 import entity.Person;
+import util.DBConnector;
 import util.SQLUtil;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -12,44 +14,62 @@ import java.util.List;
 
 public class PersonDao {
 
-    public List<Person> Resolve(ResultSet rs) {
+    public static List<Person> QueryAndResolve(String sql) {
         List<Person> pl = new ArrayList<>();
+        Connection conn = DBConnector.getConnection();
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
 
-        /** Resolve SQL results. */
-        while (true) {
-            try {
-                if (! rs.next()) break;
+        try {
+            pstmt = conn.prepareStatement(sql);
+            rs = pstmt.executeQuery();
+
+            while (rs.next()) {
                 Person p = new Person();
                 p.setId(rs.getInt(1));
                 p.setName(rs.getString(2));
                 p.setGender(rs.getInt(3));
                 pl.add(p);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
             }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            DBConnector.closeConnection(conn, pstmt, rs);
         }
 
         return pl;
     }
 
+    public List<Person> selectName(String name, Integer page){
+        Person wanted = new Person();
+        /** Person name contains {name} */
+        wanted.setName("'%" + name + "'%");
+        return QueryAndResolve(
+                new SelectT(TableName.person_table)
+                        .Limit((page-1) * 20, 20)
+                        .AddCondition(new Condition(Condition.Opt.E, wanted.getName()))
+                        .toSQL()
+        );
+    }
+
     public List<Person> SelectAll(Integer limit) {
-        return Resolve(SQLUtil.Query(
+        return QueryAndResolve(
                 new SelectT(TableName.person_table)
                         .AddOrder(new Person().getId().attri_name)
                         .Limit(limit)
                         .toSQL()
-        ));
+        );
     }
 
     public Person SelectById(Integer id) {
         Person wanted = new Person();
         wanted.setId(id);
 
-        return Resolve(SQLUtil.Query(
+        return QueryAndResolve(
                 new SelectT(TableName.person_table)
                         .AddCondition(new Condition(Condition.Opt.E, wanted.getId()))
                         .toSQL()
-        )).get(0);
+        ).get(0);
     }
 
     public int Insert(Person p) {
