@@ -2,6 +2,7 @@ package util;
 
 import exce.NullDataTypeException;
 
+import java.math.BigInteger;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -14,13 +15,13 @@ public class SQLUtil {
     public static class DataInfo{
         public String attri_name;
         public DataType attri_type;
-        public Integer int_value;
+        public BigInteger int_value;
         public Double double_value;
         public String str_value;
         public Date date_value;
 
         public DataInfo() {}
-        public DataInfo(String attri_name, DataType attri_type, Integer value) {
+        public DataInfo(String attri_name, DataType attri_type, BigInteger value) {
             this.attri_name = attri_name;
             this.attri_type = attri_type;
             this.int_value = value;
@@ -28,7 +29,7 @@ public class SQLUtil {
         public DataInfo(String attri_name, DataType attri_type, int value) {
             this.attri_name = attri_name;
             this.attri_type = attri_type;
-            this.int_value = value;
+            this.int_value = BigInteger.valueOf(value);
         }
         public DataInfo(String attri_name, DataType attri_type, Double value) {
             this.attri_name = attri_name;
@@ -52,7 +53,7 @@ public class SQLUtil {
         try {
             switch (di.attri_type) {
                 case INT, BIGINT -> {
-                    data = Integer.toString(di.int_value);
+                    data = di.int_value.toString();
                 }
                 case DECIMAL -> {
                     data = Double.toString(di.double_value);

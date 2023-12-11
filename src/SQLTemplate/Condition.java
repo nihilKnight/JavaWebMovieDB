@@ -1,13 +1,13 @@
 package SQLTemplate;
 
-import exce.NullConditionOptionException;
 import util.SQLUtil;
 
 public class Condition {
     public enum Opt{
         /** Greater, Less, Not Greater, Not Less, Equal, Not Equal
-         ** In, Not In, Exists, Not Exists. */
-        G, L, NG, NL, E, NE, IN, NIN, EX, NEX
+         ** In, Not In, Exists, Not Exists.
+         ** Like */
+        G, L, NG, NL, E, NE, IN, NIN, EX, NEX, LI
     }
     // Attribute name.
     public String attri;
@@ -31,6 +31,11 @@ public class Condition {
         this.opt = opt;
         this.requi = SQLUtil.DataParser(di);
     }
+    public Condition(Opt opt, String table, SQLUtil.DataInfo di) {
+        this.attri = table + '.' + di.attri_name;
+        this.opt = opt;
+        this.requi = SQLUtil.DataParser(di);
+    }
     public Condition(Opt opt, String attri, SelectT st) {
         this.attri = attri;
         this.opt = opt;
@@ -50,25 +55,21 @@ public class Condition {
     @Override
     public String toString() {
         String ret = null;
-        try {
-            ret = this.attri +
-                switch (this.opt) {
-                    case G -> " > ";
-                    case L -> " < ";
-                    case NG -> " <= ";
-                    case NL -> " >= ";
-                    case E -> " = ";
-                    case NE -> " != ";
-                    case IN -> " IN ";
-                    case NIN -> " NOT IN ";
-                    case EX -> " EXISTS";
-                    case NEX -> "NOT EXISTS";
-                    default -> throw new NullConditionOptionException();
-                } +
-                this.requi;
-        } catch (NullConditionOptionException ncoe) {
-            ncoe.printStackTrace();
-        }
+        ret = this.attri +
+            switch (this.opt) {
+                case G -> " > ";
+                case L -> " < ";
+                case NG -> " <= ";
+                case NL -> " >= ";
+                case E -> " = ";
+                case NE -> " != ";
+                case IN -> " IN ";
+                case NIN -> " NOT IN ";
+                case EX -> " EXISTS ";
+                case NEX -> " NOT EXISTS ";
+                case LI -> " LIKE ";
+            } +
+            this.requi;
         return ret;
     }
 }

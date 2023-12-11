@@ -2,9 +2,11 @@ package dao;
 
 import SQLTemplate.*;
 import entity.Cast;
-import entity.Person;
+import util.DBConnector;
 import util.SQLUtil;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -12,42 +14,76 @@ import java.util.List;
 
 public class CastDao {
 
-    public List<Cast> Resolve(ResultSet rs){
-        List<Cast> castlist = new ArrayList<Cast>();
+    public static List<Cast> QueryAndResolve(String sql){
+        List<Cast> cl = new ArrayList<Cast>();
+        Connection conn = DBConnector.getConnection();
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
 
-        /** Resolve SQL results. */
-        while (true) {
-            try {
-                if (! rs.next()) break;
+        /** Query. */
+        try {
+            pstmt = conn.prepareStatement(sql);
+            rs = pstmt.executeQuery();
+
+            while (rs.next()) {
                 Cast c = new Cast();
                 c.setCastId(rs.getInt(1));
                 c.setMovieId(rs.getInt(2));
                 c.setActorId(rs.getInt(3));
                 c.setCharacterName(rs.getString(4));
                 c.setOrderOfAppearance(rs.getInt(5));
-                castlist.add(c);
-
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
+                cl.add(c);
             }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            DBConnector.closeConnection(conn, pstmt, rs);
         }
-        return castlist;
+
+        return cl;
     }
 
-    public void Insert(Cast cast){
-
+    public int Insert(Cast c){
+        return SQLUtil.Update(
+                new InsertT(TableName.cast_table)
+                        .AddKeyValuePair(c.MovieId())
+                        .AddKeyValuePair(c.CastId())
+                        .AddKeyValuePair(c.ActorId())
+                        .AddKeyValuePair(c.CharacterName())
+                        .AddKeyValuePair(c.OrderOfAppearance())
+                        .toSQL()
+        );
     }
 
-    public void Update(Cast cast){
-
+    public int Update(Cast c){
+        return SQLUtil.Update(
+                new UpdateT(TableName.cast_table)
+                        .AddKeyValuePair(c.ActorId())
+                        .AddKeyValuePair(c.CharacterName())
+                        .AddKeyValuePair(c.OrderOfAppearance())
+                        .AddCondition(new Condition(Condition.Opt.E, c.MovieId()))
+                        .AddCondition(new Condition(Condition.Opt.E, c.CastId()))
+                        .toSQL()
+        );
     }
+
     public List<Cast> SelectByMovieID(Integer movie_id){
-        List<Cast> personList = new ArrayList<Cast>();
-        return personList;
+        Cast wanted = new Cast();
+        wanted.setMovieId(movie_id);
+        return QueryAndResolve(
+                new SelectT(TableName.cast_table)
+                        .AddCondition(new Condition(Condition.Opt.E, wanted.MovieId()))
+                        .toSQL()
+        );
     }
 
     public Cast SelectByPersonID(Integer person_id){
-        Cast cast = new Cast();
-        return cast;
+        Cast wanted = new Cast();
+        wanted.setActorId(person_id);
+        return QueryAndResolve(
+                new SelectT(TableName.cast_table)
+                        .AddCondition(new Condition(Condition.Opt.E, wanted.ActorId()))
+                        .toSQL()
+        ).get(0);
     }
 }

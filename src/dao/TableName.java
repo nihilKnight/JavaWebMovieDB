@@ -9,11 +9,11 @@ public class TableName {
 
     public final static String movie_table = "MOVIES";
 
-    public final static String movie_genre_table = "MOVIE_GENRE";
+    public final static String movie_genre_table = "MOVIE_GENRES";
 
-    public final static String genre_table = "GENRE";
+    public final static String genre_table = "GENRES";
 
-    public final static String movie_keyword_table = "MOVIE_KEYWORD";
+    public final static String movie_keyword_table = "MOVIE_KEYWORDS";
 
     public final static String keyword_table = "KEYWORDS";
 

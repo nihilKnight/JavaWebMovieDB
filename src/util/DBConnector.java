@@ -5,6 +5,7 @@ import java.sql.*;
 public class DBConnector {
     static{
         try {
+            System.out.println("Initializing jdbc driver...");
             Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -20,7 +21,7 @@ public class DBConnector {
     public static Connection getConnection(){
         Connection conn = null;
         try {
-            String url = "jdbc:mysql://localhost:3306/java_web_test_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
+            String url = "jdbc:mysql://localhost:3306/java_web_movie?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
             String username = "jwtd_user";
             String password = "jwtd";
             conn = DriverManager.getConnection(url, username, password);
