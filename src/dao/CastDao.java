@@ -46,11 +46,11 @@ public class CastDao {
     public int Insert(Cast c){
         return SQLUtil.Update(
                 new InsertT(TableName.cast_table)
-                        .AddKeyValuePair(c.getMovieId())
-                        .AddKeyValuePair(c.getCastId())
-                        .AddKeyValuePair(c.getActorId())
-                        .AddKeyValuePair(c.getCharacterName())
-                        .AddKeyValuePair(c.getOrderOfAppearance())
+                        .AddKeyValuePair(c.MovieId())
+                        .AddKeyValuePair(c.CastId())
+                        .AddKeyValuePair(c.ActorId())
+                        .AddKeyValuePair(c.CharacterName())
+                        .AddKeyValuePair(c.OrderOfAppearance())
                         .toSQL()
         );
     }
@@ -58,11 +58,11 @@ public class CastDao {
     public int Update(Cast c){
         return SQLUtil.Update(
                 new UpdateT(TableName.cast_table)
-                        .AddKeyValuePair(c.getActorId())
-                        .AddKeyValuePair(c.getCharacterName())
-                        .AddKeyValuePair(c.getOrderOfAppearance())
-                        .AddCondition(new Condition(Condition.Opt.E, c.getMovieId()))
-                        .AddCondition(new Condition(Condition.Opt.E, c.getCastId()))
+                        .AddKeyValuePair(c.ActorId())
+                        .AddKeyValuePair(c.CharacterName())
+                        .AddKeyValuePair(c.OrderOfAppearance())
+                        .AddCondition(new Condition(Condition.Opt.E, c.MovieId()))
+                        .AddCondition(new Condition(Condition.Opt.E, c.CastId()))
                         .toSQL()
         );
     }
@@ -72,7 +72,7 @@ public class CastDao {
         wanted.setMovieId(movie_id);
         return QueryAndResolve(
                 new SelectT(TableName.cast_table)
-                        .AddCondition(new Condition(Condition.Opt.E, wanted.getMovieId()))
+                        .AddCondition(new Condition(Condition.Opt.E, wanted.MovieId()))
                         .toSQL()
         );
     }
@@ -82,7 +82,7 @@ public class CastDao {
         wanted.setActorId(person_id);
         return QueryAndResolve(
                 new SelectT(TableName.cast_table)
-                        .AddCondition(new Condition(Condition.Opt.E, wanted.getActorId()))
+                        .AddCondition(new Condition(Condition.Opt.E, wanted.ActorId()))
                         .toSQL()
         ).get(0);
     }

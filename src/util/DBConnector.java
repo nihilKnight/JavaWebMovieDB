@@ -5,6 +5,7 @@ import java.sql.*;
 public class DBConnector {
     static{
         try {
+            System.out.println("Initializing jdbc driver...");
             Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();

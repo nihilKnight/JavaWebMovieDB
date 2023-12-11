@@ -4,18 +4,18 @@ import exce.GenderException;
 import util.SQLUtil;
 
 public class Person {
-    public Integer id;
-    public String name;
-    public int gender;
+    public Integer id = 0;
+    public String name = "";
+    public int gender = 0;
 
     /** Getters which return the attribute name, attribute type in MySQL, and the exact value. */
-    public SQLUtil.DataInfo getId() {
+    public SQLUtil.DataInfo Id() {
         return new SQLUtil.DataInfo("id", SQLUtil.DataType.BIGINT, this.id);
     }
-    public SQLUtil.DataInfo getName() {
+    public SQLUtil.DataInfo Name() {
         return new SQLUtil.DataInfo("name", SQLUtil.DataType.VARCHAR, this.name);
     }
-    public SQLUtil.DataInfo getGender() {
+    public SQLUtil.DataInfo Gender() {
         return new SQLUtil.DataInfo("gender", SQLUtil.DataType.INT, this.gender);
     }
 

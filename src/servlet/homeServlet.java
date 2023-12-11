@@ -2,6 +2,7 @@ package servlet;
 
 import dao.MoviesDao;
 import entity.Movie;
+import exce.homeTypeException;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -10,7 +11,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import exce.homeTypeException;
 
 @WebServlet("/home")
 public class homeServlet extends HttpServlet {

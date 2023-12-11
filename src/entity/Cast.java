@@ -3,26 +3,26 @@ package entity;
 import util.SQLUtil;
 
 public class Cast {
-    public int cast_id;
-    public Integer movie_id;
-    public Integer actor_id;
-    public String character_name;
-    public int order_of_appearance;
+    public int cast_id = 0;
+    public Integer movie_id = 0;
+    public Integer actor_id = 0;
+    public String character_name = "";
+    public int order_of_appearance = 0;
 
     /** Getters which return the attribute name, attribute type in MySQL, and the exact value. */
-    public SQLUtil.DataInfo getCastId() {
+    public SQLUtil.DataInfo CastId() {
         return new SQLUtil.DataInfo("cast_id", SQLUtil.DataType.INT, this.cast_id);
     }
-    public SQLUtil.DataInfo getMovieId() {
+    public SQLUtil.DataInfo MovieId() {
         return new SQLUtil.DataInfo("movie_id", SQLUtil.DataType.BIGINT, this.movie_id);
     }
-    public SQLUtil.DataInfo getActorId() {
+    public SQLUtil.DataInfo ActorId() {
         return new SQLUtil.DataInfo("actor_id", SQLUtil.DataType.BIGINT, this.actor_id);
     }
-    public SQLUtil.DataInfo getCharacterName() {
+    public SQLUtil.DataInfo CharacterName() {
         return new SQLUtil.DataInfo("actor_id", SQLUtil.DataType.VARCHAR, this.character_name);
     }
-    public SQLUtil.DataInfo getOrderOfAppearance() {
+    public SQLUtil.DataInfo OrderOfAppearance() {
         return new SQLUtil.DataInfo("actor_id", SQLUtil.DataType.INT, this.order_of_appearance);
     }
 
