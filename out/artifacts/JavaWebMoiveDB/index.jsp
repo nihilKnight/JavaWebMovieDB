@@ -11,6 +11,9 @@
     <title>JavaWebMovieDB</title>
 </head>
 <body>
-    <p>Hello, world!</p>
+<script>
+    // 使用 JavaScript 在页面加载时重定向到另一个页面
+    location.href = 'home';
+</script>
 </body>
 </html>
