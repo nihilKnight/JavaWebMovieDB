@@ -20,8 +20,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class movieDetailServlet extends HttpServlet {
 
     static class MovieWithCast{
-        private Movie movie;
-        private List<Cast> castList;
+        public Movie movie;
+        public List<Cast> castList;
 
         public MovieWithCast(Movie movie, List<Cast> castList) {
             this.movie = movie;
