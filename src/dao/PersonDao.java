@@ -43,11 +43,11 @@ public class PersonDao {
     public List<Person> selectName(String name, Integer page){
         Person wanted = new Person();
         /** Person name contains {name} */
-        wanted.setName("'%" + name + "'%");
+        wanted.setName("%" + name + "%");
         return QueryAndResolve(
                 new SelectT(TableName.person_table)
                         .Limit((page-1) * 20, 20)
-                        .AddCondition(new Condition(Condition.Opt.E, wanted.getName()))
+                        .AddCondition(new Condition(Condition.Opt.E, wanted.Name()))
                         .toSQL()
         );
     }
@@ -55,7 +55,7 @@ public class PersonDao {
     public List<Person> SelectAll(Integer limit) {
         return QueryAndResolve(
                 new SelectT(TableName.person_table)
-                        .AddOrder(new Person().getId().attri_name)
+                        .AddOrder(new Person().Id().attri_name)
                         .Limit(limit)
                         .toSQL()
         );
@@ -67,7 +67,7 @@ public class PersonDao {
 
         return QueryAndResolve(
                 new SelectT(TableName.person_table)
-                        .AddCondition(new Condition(Condition.Opt.E, wanted.getId()))
+                        .AddCondition(new Condition(Condition.Opt.E, wanted.Id()))
                         .toSQL()
         ).get(0);
     }
@@ -75,9 +75,9 @@ public class PersonDao {
     public int Insert(Person p) {
         return SQLUtil.Update(
                 new InsertT(TableName.person_table)
-                        .AddKeyValuePair(p.getId())
-                        .AddKeyValuePair(p.getName())
-                        .AddKeyValuePair(p.getGender())
+                        .AddKeyValuePair(p.Id())
+                        .AddKeyValuePair(p.Name())
+                        .AddKeyValuePair(p.Gender())
                         .toSQL()
         );
     }
@@ -85,9 +85,9 @@ public class PersonDao {
     public int Update(Person p) {
         return SQLUtil.Update(
                 new UpdateT(TableName.person_table)
-                        .AddKeyValuePair(p.getName())
-                        .AddKeyValuePair(p.getGender())
-                        .AddCondition(new Condition(Condition.Opt.E, p.getId()))
+                        .AddKeyValuePair(p.Name())
+                        .AddKeyValuePair(p.Gender())
+                        .AddCondition(new Condition(Condition.Opt.E, p.Id()))
                         .toSQL()
         );
     }
@@ -98,7 +98,7 @@ public class PersonDao {
 
         return SQLUtil.Update(
                 new DeleteT(TableName.person_table)
-                        .AddCondition(new Condition(Condition.Opt.E, wanted.getId()))
+                        .AddCondition(new Condition(Condition.Opt.E, wanted.Id()))
                         .toSQL()
         );
     }
