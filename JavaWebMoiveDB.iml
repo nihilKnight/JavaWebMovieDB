@@ -41,5 +41,19 @@
     </orderEntry>
     <orderEntry type="library" name="fasterxml.jackson.core.annotations" level="project" />
     <orderEntry type="library" name="fasterxml.jackson.core.databind" level="project" />
+<<<<<<< Updated upstream
+=======
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://C:/Program Files/mysql-connector-j-8.0.33/mysql-connector-j-8.0.33.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="library" name="jackson-annotations-2.12.6" level="project" />
+    <orderEntry type="library" name="jackson-annotations-2.15.3" level="project" />
+>>>>>>> Stashed changes
   </component>
 </module>
