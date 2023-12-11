@@ -1,11 +1,8 @@
 package servlet;
 
-import dao.CastDao;
 import dao.MoviesDao;
-import entity.Cast;
 import entity.Movie;
-import dao.PersonDao;
-import entity.Person;
+import entity.Cast;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -43,12 +40,9 @@ public class movieDetailServlet extends HttpServlet {
 
         MoviesDao md = new MoviesDao();
         Movie movie = md.selectID(movie_id);
-        CastDao cd = new CastDao();
-        List<Cast> castList = cd.SelectByMovieID(movie_id);
-        MovieWithCast mwc = new MovieWithCast(movie, castList);
 
         ObjectMapper objectMapper = new ObjectMapper();
-        String jsonMovies = objectMapper.writeValueAsString(mwc);
-        response.getWriter().write(jsonMovies);
+        String jsonMovie = objectMapper.writeValueAsString(movie);
+        response.getWriter().write(jsonMovie);
     }
 }
