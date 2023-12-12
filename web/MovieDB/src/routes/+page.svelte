@@ -2,23 +2,23 @@
   { /* 导入 */ }
   {/*onMount用于处理生命周期*/}
 	import { onMount } from 'svelte' 
-  import { API, KEY } from '../lib/api'
+  import { API } from '../lib/api'
   import MovieCard from '../lib/components/MovieCard.svelte'
   
   { /* 初始化 */ }
   let popularMovies
-  let time = 'Trending'
+  let time = 'Highest'
   { /* 异步数据获取 */ }
   async function load() {
     let apiUrl
-    if (time === 'Trending') {
-      apiUrl = `${API}/trending/movie/week${KEY}&page=1&language=en-US`
+    if (time === 'Highest') {
+      apiUrl = `${API}/home?type=popular&Page=1`
     } else if (time === 'Latest') {
-      apiUrl = `${API}/movie/popular${KEY}&page=1&language=en-US`
+      apiUrl = `${API}/home?type=latest&Page=1`
     }
     const data = await fetch(apiUrl)
       .then(res => res.json())
-    popularMovies = data.results
+    popularMovies = data
   }
   
   {/*onMount在组件挂载时调用load*/}
@@ -33,14 +33,14 @@
 <div class="flex align-center my-6 space-x-4">
   <h2 class="text-2xl">Popular Movies</h2>
   <select name="time" id="time"  bind:value={time} on:change={load} class="bg-gray-200 dark:bg-gray-800 rounded-md px-2 py-1">
-    <option value="Trending" class="">Trending</option>
+    <option value="Highest" class="">Highest Score</option>
     <option value="Latest" class="">Latest</option>
   </select>
 </div>
 
 {#if popularMovies}
   <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-4 mb-6">
-    {#each popularMovies as show (show.id)}
+    {#each popularMovies as show (show.movie_id)}
       <MovieCard item={show} media=movie />
     {/each}
   </div>

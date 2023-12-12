@@ -1,23 +1,26 @@
 <script>
   import { page } from '$app/stores'
 	import { onMount } from 'svelte'
-  import { API } from '../../../lib/api'
+  import { API } from '$lib/api'
 
   const id = $page.url.pathname.split('/')[2]
 
   let movie;
+  let genres;
   let castList = [];
   let crewList = [];
 
   async function load() {
-    movie = await fetch(
-			`${API}/movie/${id}${KEY}&language=en-US`
+    const data = await fetch(
+			`${API}/movieDetail?movie_id=${id}`
 		).then(res => res.json());
-    const actors = await fetch(
-      `${API}/movie/${id}/credits?api_key=799c0bd0b2baaecc6d9301fadfaea7f7&language=en-US&page=1`
-    ).then(resPerson => resPerson.json());
-    castList = actors.cast || []
-    crewList = actors.crew || []
+    //const actors = await fetch(
+    //  `https://api.themoviedb.org/3/movie/${id}/credits?api_key=799c0bd0b2baaecc6d9301fadfaea7f7&language=en-US&page=1`
+    //).then(resPerson => resPerson.json());
+    movie = data.movie;
+    genres = data.genres;
+    castList = data.castDetailList || [];
+    crewList = data.crewDetailList || [];
   }
   onMount(() => load())
 </script>
@@ -29,18 +32,29 @@
 
 {#if movie}
 <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 my-6">
-  <div class="lg:col-span-6 flex justify-between items-center">
+  <div class="lg:col-span-6 flex flex-col justify-start items-start">
     <h2 class="text-4xl text-black font-extrabold my-2">
       {movie.title}
     </h2>
-    <p class="text-3xl text-amber-500 font-extrabold">{movie.vote_average.toFixed(1)}<span class="text-black">/10</span></p>
+    <h4 class="text-xl text-gray-700 font-normal italic">{movie.tagline}</h4>
+    <div class="flex justify-end items-center">
+      <h5 class="text-3xl text-amber-500 font-extrabold">{movie.vote_average.toFixed(1)}<span class="text-black">/10</span></h5>
+      <p class="text-black font-extrabold ml-4">VOTE COUNT: <span class="text-amber-500">{movie.vote_count}</span></p>
+    </div>
   </div>
   
   <div class="lg:col-span-3">
-    <img src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`} alt="Poster" class="rounded-md">
+    <img src={`https://image.tmdb.org/t/p/original${movie.backdrop_path || '/z6OkT7XjzSrgstiTlld0jUvME9y.jpg'}`} 
+    alt={'Poster' || 'NO PICTURE FOUND'} class="rounded-md"
+    >
   </div>
   
   <div class="lg:col-span-3 ml-4">
+    <h3 class="text-2xl text-black font-semibold">Overview</h3>
+    <p class="my-4">{movie.overview}</p>
+  </div>
+
+  <div class="lg:col-span-2">
     <h3 class="text-2xl text-black mb-4 font-semibold">Infomation</h3>
     <table class="table-fixed">
       <tbody class="text-left">
@@ -49,58 +63,37 @@
             Genres
           </th>
           <td class="">
-            {#each movie.genres as genre}
+            {#each genres as genre}
               <a href={`/genre/${genre.id}`} class="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-sm font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10 mr-2">
                 {genre.name}
               </a>
             {/each}
           </td>
         </tr>
-        <tr class="border-b-8 border-transparent">
-          <th class="w-32">
-            Companies
-          </th>
-          <td class="">
-          { movie.production_companies.map(item => item.name).join(', ') }
-          </td>
-        </tr>
 
+        {#if movie.original_language}
         <tr class="border-y-8 border-transparent">
           <th class="">
-            Countries
+            Original Language
           </th>
           <td class="">
-          { movie.production_countries.map(item => item.name).join(', ') }
+            {movie.original_language}
           </td>
         </tr>
+        {/if}
 
-        <tr class="border-y-8 border-transparent">
-          <th class="">
-            Spoken Languages
-          </th>
-          <td class="">
-          { movie.spoken_languages?.map(item => item.name).join(', ') }
-          </td>
-        </tr>
-
-        <tr class="border-y-8 border-transparent">
-          <th class="">
-            Genres
-          </th>
-          <td class="">
-          { movie.genres.map(item => item.name).join(', ') }
-          </td>
-        </tr>
-
+        {#if movie.releaseDate}
         <tr class="border-y-8 border-transparent">
           <th class="">
             Release Date
           </th>
           <td class="">
-            {movie.release_date}
+            {movie.releaseDate}
           </td>
         </tr>
+        {/if}
         
+        {#if movie.runtime}
         <tr class="border-y-8 border-transparent">
           <th class="">
             Runtime
@@ -109,57 +102,58 @@
             {movie.runtime} minutes
           </td>
         </tr>
+        {/if}
 
+        {#if movie.budget}
         <tr class="border-y-8 border-transparent">
           <th class="">
             Budget
           </th>
           <td class="">
-            R${movie.budget.toFixed(2)}
+            ${movie.budget}
           </td>
         </tr>
+        {/if}
 
+        {#if movie.revenue}
         <tr class="border-y-8 border-transparent">
           <th class="">
             Revenue
           </th>
           <td class="">
-            R${movie.revenue.toFixed(2)}
+            ${movie.revenue}
           </td>
         </tr>
+        {/if}
 
+        {#if movie.popularity}
         <tr class="border-t-8 border-transparent">
           <th class="">
-            Vote Count
+            Popularity
           </th>
           <td class="">
-            {movie.vote_count}
+            {movie.popularity.toFixed(4)}
           </td>
         </tr>
-
+        {/if}
       </tbody>
     </table>
-  </div>
-
-  <div class="lg:col-span-2">
-    <h3 class="text-2xl text-black font-semibold">Overview</h3>
-    <p class="my-4">{movie.overview}</p>
   </div>
   
   <div class="lg:col-span-2 ml-4">
     <h3 class="text-2xl text-black font-semibold">Cast</h3>
     <div class="my-4 overflow-y-auto max-h-96">
       {#each castList as actor}
-        <a href={`/person/${actor.id}`} class="">
+        <a href={`/person/${actor.detail.id}`} class="">
           <div class="flex gap-4 items-center mb-4">
               <img 
-                  src={`https://image.tmdb.org/t/p/original${actor.profile_path}`} 
-                  alt={actor.name}
+                  src={`https://image.tmdb.org/t/p/original${actor.detail.profile_path||'/5fbvIkZ02RdcXfZHUUk4cQ9kILK.jpg'}`} 
+                  alt={actor.detail.name||'Not found'}
                   class="w-[56px] h-[56px] object-cover rounded-full"
               >
               <div class="flex flex-col gap-1">
-                <h2 class="text-[18px] font-bold uppercase">{actor.character}</h2>
-                <h3 class="text-1 text-amber-500 font-normal">{actor.name}</h3>  
+                <h2 class="text-[18px] font-bold uppercase">{actor.cast.character_name}</h2>
+                <h3 class="text-1 text-amber-500 font-normal">{actor.detail.name}</h3>  
               </div>
           </div>
         </a>
@@ -171,16 +165,16 @@
     <h3 class="text-2xl text-black font-semibold">Crew</h3>
     <div class="my-4 overflow-y-auto max-h-96">
       {#each crewList as staff}
-        <a href={`/person/${staff.id}`} class="">
+        <a href={`/person/${staff.detail.id}`} class="">
           <div class="flex gap-4 items-center mb-4">
               <img 
-                  src={`https://image.tmdb.org/t/p/original${staff.profile_path}`} 
-                  alt={staff.name}
+                  src={`https://image.tmdb.org/t/p/original${staff.detail.profile_path||'/6Am3gD4CVdU7x8WBVNwN4KKAM0V.jpg'}`} 
+                  alt={staff.detail.name||'Not found'}
                   class="w-[56px] h-[56px] object-cover rounded-full"
               >
               <div class="flex flex-col gap-1">
-                <h2 class="text-[18px] font-bold uppercase">{staff.job}</h2>
-                <h3 class="text-1 text-amber-500 font-normal">{staff.name}</h3>  
+                <h2 class="text-[18px] font-bold uppercase">{staff.crew.job}</h2>
+                <h3 class="text-1 text-amber-500 font-normal">{staff.detail.name}</h3>  
               </div>
           </div>
         </a>

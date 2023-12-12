@@ -1,6 +1,7 @@
 <script>
   import { page } from '$app/stores'
 	import { onMount } from 'svelte'
+  import { API } from '../lib/api'
 
   const id = $page.url.pathname.split('/')[2]
 
@@ -9,7 +10,7 @@
 
   async function load() {
     person = await fetch(
-			`https://api.themoviedb.org/3/person/${id}?api_key=799c0bd0b2baaecc6d9301fadfaea7f7&append_to_response=combined_credits&language=en-US`
+			`${API}/personDetail?person_id=${id}`
 		).then(res => res.json());
     castMovies = person.combined_credits.cast || []
   }

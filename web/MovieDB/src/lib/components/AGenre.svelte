@@ -2,7 +2,6 @@
   export let props;
   import { onMount } from 'svelte'; 
   import { fade } from 'svelte/transition';
-  import { navigating } from '$app/stores';
 
   let isDropdownOpen = false;
   let movieGenres;
@@ -10,7 +9,7 @@
 
   async function load() {
     const data = await fetch(
-      `https://api.themoviedb.org/3/genre/movie/list?api_key=799c0bd0b2baaecc6d9301fadfaea7f7&language=en-US`
+      `${API}/header`
     ).then(res => res.json());
     movieGenres = data.genres
   }
@@ -48,7 +47,7 @@
     {#each movieGenres as genre}
       <div class="group">
         <a href={`/genre/${genre.id}`}
-          on:click={closeDropdown}
+          on:click={closeDropdown} data-sveltekit-reload
           class="text-black block px-4 py-2 text-base font-medium group-hover:text-blue-500 truncate overflow-hidden" role="menuitem"
         >
           {genre.name}

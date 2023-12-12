@@ -1,7 +1,7 @@
 <script>
   import { onMount } from 'svelte' 
-  import { API, KEY } from '../../lib/api'
-  import MovieCard from '../../lib/components/MovieCard.svelte'
+  import { API } from '$lib/api'
+  import MovieCard from '$lib/components/MovieCard.svelte'
 
   let query = ''
   let media = 'movie'
@@ -42,7 +42,7 @@
     preparePages()
     if (!query || !media) return
     const data = await fetch(
-			`${API}/search/${media}${KEY}&page=${page}&language=en-US&query=${query}`
+      `${API}/search?type=${media}&name=${query}&Page=${page}`
 		).then(res => res.json())
     results = (data.results)
   }
@@ -91,7 +91,7 @@
     {#each pages as pag (pag)}
     <button on:click={() => selectPage(pag)} 
       class="w-10 h-10
-       {pag === page ? "bg-blue-400/80" : "bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 hover:dark:bg-gray-700"}"
+       {pag === page ? "bg-blue-500/80" : "bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 hover:dark:bg-gray-700"}"
     >
       {pag}
     </button>

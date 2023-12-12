@@ -1,6 +1,7 @@
 <script>
   import { page } from '$app/stores'
 	import { onMount } from 'svelte' 
+  import { API } from '$lib/api'
   import MovieCard from '../../../lib/components/MovieCard.svelte'
 
   const id = $page.url.pathname.split('/')[2]
@@ -40,7 +41,7 @@
   async function load() {
     preparePages()
     const data = await fetch(
-			`https://api.themoviedb.org/3/discover/movie?api_key=799c0bd0b2baaecc6d9301fadfaea7f7&language=en-US&with_genres=${id}&page=${pageNum}`
+      `${API}/genre?genre_id=${id}&Page=${page}`
 		).then(res => res.json())
     typeMovies = data.results
   }
@@ -70,7 +71,7 @@
     {#each pages as pag (pag)}
     <button on:click={() => selectPage(pag)} 
       class="w-10 h-10
-       {pag === pageNum ? "bg-blue-400/80" : "bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 hover:dark:bg-gray-700"}"
+       {pag === pageNum ? "bg-blue-500/80" : "bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 hover:dark:bg-gray-700"}"
     >
       {pag}
     </button>
