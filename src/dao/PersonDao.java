@@ -47,7 +47,7 @@ public class PersonDao {
         return QueryAndResolve(
                 new SelectT(TableName.person_table)
                         .Limit((page-1) * 20, 20)
-                        .AddCondition(new Condition(Condition.Opt.E, wanted.Name()))
+                        .AddCondition(new Condition(Condition.Opt.LI, wanted.Name()))
                         .toSQL()
         );
     }

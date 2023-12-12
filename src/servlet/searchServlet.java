@@ -34,11 +34,11 @@ public class searchServlet extends HttpServlet {
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonMovies = "";
 
-        if(query.equals("movie")){
+        if (query.equals("movie")){
             MoviesDao md = new MoviesDao();
             List<Movie> movies = md.selectName(name, page);
             jsonMovies = objectMapper.writeValueAsString(movies);
-        }else{
+        } else if (query.equals("person")){
             PersonDao pd = new PersonDao();
             List<Person> personList = pd.selectName(name, page);
             jsonMovies = objectMapper.writeValueAsString(personList);

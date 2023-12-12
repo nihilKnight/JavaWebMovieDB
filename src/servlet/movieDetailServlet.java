@@ -1,12 +1,7 @@
 package servlet;
 
-import dao.CastDao;
-import dao.CrewDao;
-import dao.MoviesDao;
-import dao.PersonDao;
-import entity.Crew;
-import entity.Movie;
-import entity.Cast;
+import dao.*;
+import entity.*;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -15,7 +10,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import entity.Person;
 
 @WebServlet("/movieDetail")
 public class movieDetailServlet extends HttpServlet {
@@ -38,15 +32,16 @@ public class movieDetailServlet extends HttpServlet {
     }
     static class MovieWithPerson {
         public Movie movie;
+        public List<Genre> genres = new ArrayList<>();
         public List<CastDetail> castDetailList = new ArrayList<>();
         public List<CrewDetail> crewDetailList = new ArrayList<>();
 
-        public MovieWithPerson(Movie movie, List<Cast> castList, List<Crew> crewList) {
+        public MovieWithPerson(Movie movie, List<Genre> genres, List<Cast> castList, List<Crew> crewList) {
             this.movie = movie;
+            this.genres = genres;
             castList.forEach( cast -> castDetailList.add(new CastDetail(cast)) );
             crewList.forEach( crew -> crewDetailList.add(new CrewDetail(crew)) );
         }
-
     }
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -61,6 +56,7 @@ public class movieDetailServlet extends HttpServlet {
 
         MovieWithPerson mwp = new MovieWithPerson(
                 new MoviesDao().selectID(movie_id),
+                new GenreDao().SelectByMovieId(movie_id),
                 new CastDao().SelectByMovieID(movie_id),
                 new CrewDao().SelectByMovieID(movie_id)
         );
