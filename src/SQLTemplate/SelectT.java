@@ -143,11 +143,11 @@ public class SelectT extends SQLT{
             if (! st.conditions.isEmpty()) {
                 sql.append(" \nWHERE ").append(String.join(" AND ", st.conditions));
             }
+            if (! st.group.isEmpty()) {
+                sql.append(" \nGROUP BY").append(String.join(", ", st.group));
+            }
             if (! st.orders.isEmpty()) {
                 sql.append(" \nORDER BY ").append(String.join(", ", st.orders));
-            }
-            if (st.group != null) {
-                sql.append(" \nGROUP BY").append(String.join(", ", st.group));
             }
             if (st.limit != null) {
                 sql.append(" \nLIMIT ").append(st.limit);
