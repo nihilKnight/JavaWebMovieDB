@@ -101,7 +101,7 @@
               alt={movie.title}
               class="rounded-lg mb-2 object-cover group-hover:scale-105 transition-all duration-300"
             >
-            <h4 class="text-center font-semibold group-hover:text-blue-500/80">{movie.original_title}</h4>
+            <h4 class="text-center font-semibold group-hover:text-blue-500/80">{movie.original_title || movie.title}</h4>
           </div>
         </a>
       {/each}

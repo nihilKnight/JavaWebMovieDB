@@ -25,6 +25,7 @@
     <A props={{name: "Home", link:"/"}} />
     <A props={{name: "Search", link:"/search"}} />
     <AGenre props={{name: "Genre", link:"#"}} />
+    <A props={{name: "Login", link:"/login"}} />
     <div class="inline-block hover:bg-gray-300 dark:hover:bg-gray-700 rounded-md">
       <Theme />
     </div>
@@ -41,6 +42,9 @@
     </button>
     <button on:click={showNav} class="text-left w-full">
       <AGenre props={{name: "Genre", link:"#"}} />
+    </button>
+    <button on:click={showNav} class="text-left w-full">
+      <AH props={{name: "Login", link:"/login"}} />
     </button>
     <button on:click={showNav} class="w-full hover:bg-gray-300 dark:hover:bg-gray-700 rounded-md">
       <Theme />

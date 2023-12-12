@@ -5,10 +5,10 @@
 
 <div class="rounded-lg hover:bg-gray-200 dark:hover:bg-gray-800 hover:shadow-lg group">
   <a href={`/${item.media_type || media}/${item.id}`} class="">
-    <div class="h-68">
+    <div class="">
       <img src={`https://image.tmdb.org/t/p/w500${item.poster_path || item.profile_path}`} 
         alt={item.title || item.name || 'NO PICTURE FOUND'} 
-        class="object-cover rounded-lg group-hover:scale-105 transition-all duration-300">
+        class="h-68 object-cover rounded-lg group-hover:scale-105 transition-all duration-300">
     </div>
     <div class="p-1 pt-2.5 pb-3">
       <h4 class="font-semibold group-hover:text-blue-500/80 truncate overflow-hidden">

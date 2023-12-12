@@ -62,10 +62,12 @@
     <option value="person" class="">Person</option>
   </select>
   <form on:submit|preventDefault={load} class="">
-    <input type="text" class="px-2 py-1 bg-gray-200 dark:bg-gray-800 focus:ring-2 ring-offset-2 
-      ring-offset-white placeholder:italic dark:ring-offset-gray-900 ring-blue-500/50 rounded-md outline-none"
+    <input type="text" class="px-2 py-1 bg-gray-50 focus:ring-blue-500/80 focus:border-blue-500 ring-offset-2 
+      ring-offset-white border-gray-300 rounded-md outline-none border block w-full 
+      dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
       placeholder="Search..." bind:value={query}
     >
+    
   </form>
 </div>
 

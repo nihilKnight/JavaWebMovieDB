@@ -70,7 +70,7 @@ public class Condition {
                     case EX -> " EXISTS ";
                     case NEX -> " NOT EXISTS ";
                     case LI -> " LIKE ";
-                    case default -> throw new NullConditionOptionException();
+                    default -> throw new NullConditionOptionException();
                 } +
                 this.requi;
         } catch (NullConditionOptionException ncoe) {

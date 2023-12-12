@@ -1,7 +1,7 @@
 <script>
   import { page } from '$app/stores'
 	import { onMount } from 'svelte'
-  import { API, KEY } from '../../../lib/api'
+  import { API } from '../../../lib/api'
 
   const id = $page.url.pathname.split('/')[2]
 
@@ -14,7 +14,7 @@
 			`${API}/movie/${id}${KEY}&language=en-US`
 		).then(res => res.json());
     const actors = await fetch(
-      `https://api.themoviedb.org/3/movie/${id}/credits?api_key=799c0bd0b2baaecc6d9301fadfaea7f7&language=en-US&page=1`
+      `${API}/movie/${id}/credits?api_key=799c0bd0b2baaecc6d9301fadfaea7f7&language=en-US&page=1`
     ).then(resPerson => resPerson.json());
     castList = actors.cast || []
     crewList = actors.crew || []
