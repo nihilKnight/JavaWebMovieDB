@@ -13,12 +13,12 @@ import java.util.*;
  * This file is to illustrate the contribution of movies of every director/actor per year.
  */
 
-public class DACPerYear {
+public class ACAPerYear {
     public static final int xDimension = 10;
     public List<String> xLabels = new ArrayList<>();
     public List<String> yLabels = new ArrayList<>();
 
-    public DACPerYear() {
+    public ACAPerYear() {
         Set<String> xSet = new HashSet<>();
         Set<String> ySet = new HashSet<>();
 
@@ -34,10 +34,10 @@ public class DACPerYear {
             xdpe.printStackTrace();
         }
 
-        GenreDao.QueryAndResolve(
-                new SelectT(TableName.genre_table).toSQL()
-        ).forEach( genre -> ySet.add(genre.genre_name));
-        this.yLabels.addAll(ySet);
-        Collections.sort(this.yLabels);
+//        GenreDao.QueryAndResolve(
+//                new SelectT(TableName.cast_table, ).toSQL()
+//        ).forEach( genre -> ySet.add(genre.genre_name));
+//        this.yLabels.addAll(ySet);
+//        Collections.sort(this.yLabels);
     }
 }

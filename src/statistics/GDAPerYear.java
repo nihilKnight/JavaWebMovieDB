@@ -41,7 +41,7 @@ public class GDAPerYear {
 
         GenreDao.QueryAndResolve(
                 new SelectT(TableName.genre_table).toSQL()
-        ).forEach( genre -> ySet.add('\'' + genre.genre_name + '\''));
+        ).forEach( genre -> ySet.add(genre.genre_name));
         this.yLabels.addAll(ySet);
         Collections.sort(this.yLabels);
     }
@@ -73,7 +73,7 @@ public class GDAPerYear {
                                 .AddCondition(new Condition(Condition.Opt.E,
                                         TableName.genre_table, new Genre().Id().attri_name,
                                         TableName.movie_genre_table, new GenreMovie().GenreId().attri_name))
-                                .AddCondition(new Condition(Condition.Opt.E, new Genre().GenreName().attri_name, label))
+                                .AddCondition(new Condition(Condition.Opt.E, new Genre().GenreName().attri_name, '\'' + label + '\''))
                                 .AddCondition(new Condition(Condition.Opt.E, "YEAR(" + new Movie().ReleaseDate().attri_name + ")", this.xLabels.get(i)))
                                 .toSQL()
                 ).get(0));
