@@ -52,15 +52,6 @@ public class PersonDao {
         );
     }
 
-    public List<Person> SelectAll(Integer limit) {
-        return QueryAndResolve(
-                new SelectT(TableName.person_table)
-                        .AddOrder(new Person().Id().attri_name)
-                        .Limit(limit)
-                        .toSQL()
-        );
-    }
-
     public Person SelectById(Integer id) {
         Person wanted = new Person();
         wanted.setId(id);

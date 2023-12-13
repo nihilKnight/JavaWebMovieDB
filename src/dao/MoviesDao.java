@@ -53,35 +53,6 @@ public class MoviesDao {
         return ml;
     }
 
-    public List<Movie> SelectAll(Integer limit) {
-        return QueryAndResolve(
-                new SelectT(TableName.movie_table)
-                        .AddOrder(new Movie().MovieId().attri_name)
-                        .Limit(limit)
-                        .toSQL()
-        );
-    }
-
-    public List<Movie> SelectByKeyword(String keyword) {
-        Keyword wanted = new Keyword();
-        wanted.setKeywordName(keyword);
-
-        return QueryAndResolve(
-                new SelectT(List.of(TableName.keyword_table, TableName.movie_keyword_table, TableName.movie_table))
-                        .AddColumn(TableName.movie_table, "*")
-                        .AddCondition(new Condition(Condition.Opt.E,
-                                TableName.keyword_table, new Keyword().Id().attri_name,
-                                TableName.movie_keyword_table, new KeywordMovie().KeywordId().attri_name
-                        ))
-                        .AddCondition(new Condition(Condition.Opt.E,
-                                TableName.movie_table, new Movie().MovieId().attri_name,
-                                TableName.movie_keyword_table, new KeywordMovie().MovieId().attri_name
-                        ))
-                        .AddCondition(new Condition(Condition.Opt.E, wanted.KeywordName()))
-                        .toSQL()
-        );
-    }
-
     public int Insert(Movie m) {
         return SQLUtil.Update(
                 new InsertT(TableName.movie_table)
@@ -135,7 +106,6 @@ public class MoviesDao {
         );
     }
 
-    /** TOP AND MOST RECENT MOVIES*/
     public List<Movie> TopPopular(Integer page){
         return QueryAndResolve(
                 new SelectT(TableName.movie_table)

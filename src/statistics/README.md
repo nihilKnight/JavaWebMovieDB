@@ -15,7 +15,7 @@ In detail, this feature has supported the statistics needs below:
 - **[Actor Contribution Analysis Per Year](ACAPerYear.java);**
 - **[Runtime Intervals Analysis Per Year](RIAPerYear.java);**
 - **[Original Language Analysis Per Year](OLAPerYear.java);**
-- **[Revenue/Budget Rate Per Movie](RBRPerMovie.java);**
+- **[Revenue/Budget Rate Intervals Analysis Per Year](RBRIAPerYear.java);**
 
 For each need, it will be elaborated in each `.java` file.
 
