@@ -139,7 +139,7 @@ public class MoviesDao {
     public List<Movie> TopPopular(Integer page){
         return QueryAndResolve(
                 new SelectT(TableName.movie_table)
-                        .AddOrder(new Movie().Popularity().attri_name, SelectT.OrderType.DESC)
+                        .AddOrder(new Movie().VoteAverage().attri_name, SelectT.OrderType.DESC)
                         .Limit((page-1) * 20, 20)
                         .toSQL()
         );
@@ -160,7 +160,7 @@ public class MoviesDao {
         return QueryAndResolve(
                 new SelectT(List.of(TableName.movie_table, TableName.genre_table, TableName.movie_genre_table))
                         .AddColumn(TableName.movie_table, "*")
-                        .AddOrder(new Movie().Popularity().attri_name, SelectT.OrderType.DESC)
+                        .AddOrder(new Movie().VoteAverage().attri_name, SelectT.OrderType.DESC)
                         .AddOrder(new Movie().ReleaseDate().attri_name, SelectT.OrderType.DESC)
                         .Limit((page-1) * 20, 20)
                         .AddCondition(new Condition(Condition.Opt.E,
@@ -180,7 +180,7 @@ public class MoviesDao {
         wanted.setTitle("%" + name + "%");
         return QueryAndResolve(
                 new SelectT(TableName.movie_table)
-                        .AddOrder(wanted.Popularity().attri_name, SelectT.OrderType.DESC)
+                        .AddOrder(wanted.VoteAverage().attri_name, SelectT.OrderType.DESC)
                         .AddOrder(wanted.ReleaseDate().attri_name, SelectT.OrderType.DESC)
                         .Limit((page-1) * 20, 20)
                         .AddCondition(new Condition(Condition.Opt.LI, wanted.Title()))

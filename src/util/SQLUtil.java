@@ -1,12 +1,13 @@
 package util;
 
+import entity.Person;
 import exce.NullDataTypeException;
 
 import java.math.BigInteger;
 import java.sql.*;
 import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.Date;
-import java.util.Locale;
 
 public class SQLUtil {
     public enum DataType{
@@ -91,19 +92,29 @@ public class SQLUtil {
         return count;
     }
 
-    public static ResultSet Query(String sql) {
+    public static List<String> CountAndResolve(String sql) {
         Connection conn = DBConnector.getConnection();
         PreparedStatement pstmt = null;
         ResultSet rs = null;
+        List<String> count = new ArrayList<>();
+
         try {
             pstmt = conn.prepareStatement(sql);
             rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                count.add(rs.getString(1));
+            }
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
             DBConnector.closeConnection(conn, pstmt, rs);
         }
 
-        return rs;
+        if (count.isEmpty())
+            count.add("0");
+
+        return count;
     }
 }

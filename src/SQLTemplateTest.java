@@ -195,10 +195,6 @@ public class SQLTemplateTest {
                 .AddCondition("a1 = 1234567890")
                 .toSQL();
         assertEquals(expected, actual);
-
-        /** Test whether the Query result is not null.*/
-        ResultSet rs = SQLUtil.Query(actual);
-        assertNotNull(rs);
     }
 
     public static void TestSelectTJoin() {
@@ -218,9 +214,6 @@ public class SQLTemplateTest {
                 .toSQL();
         assertEquals(expected, actual);
 
-        /** Test whether the Query result is not null.*/
-        ResultSet rs = SQLUtil.Query(actual);
-        assertNotNull(rs);
     }
 
     public static void TestSelectTJoinWithExtraConditions_1() {
