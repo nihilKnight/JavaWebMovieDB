@@ -35,8 +35,64 @@ public class Movie {
     public double vote_average = 0.0;
     public Integer vote_count = 0;
 
-    public String getReleaseDate() {
+    public String getRelease_date() {
         return new SimpleDateFormat("yyyy-MM-dd").format(this.release_date);
+    }
+
+    public Integer getMovie_id() {
+        return movie_id;
+    }
+
+    public BigInteger getBudget() {
+        return budget;
+    }
+
+    public String getHomepage() {
+        return homepage;
+    }
+
+    public String getOriginal_language() {
+        return original_language;
+    }
+
+    public String getOriginal_title() {
+        return original_title;
+    }
+
+    public String getOverview() {
+        return overview;
+    }
+
+    public double getPopularity() {
+        return popularity;
+    }
+
+    public BigInteger getRevenue() {
+        return revenue;
+    }
+
+    public Integer getRuntime() {
+        return runtime;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public String getTagline() {
+        return tagline;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public double getVote_average() {
+        return vote_average;
+    }
+
+    public Integer getVote_count() {
+        return vote_count;
     }
 
     /** Getters which return the attribute name, attribute type in MySQL, and the exact value. */

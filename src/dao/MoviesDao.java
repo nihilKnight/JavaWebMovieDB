@@ -5,6 +5,7 @@ import entity.*;
 import util.DBConnector;
 import util.SQLUtil;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.math.BigInteger;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -189,6 +190,10 @@ public class MoviesDao {
                         .AddCondition(new Condition(Condition.Opt.E, wanted.MovieId()))
                         .toSQL()
         ).get(0);
+    }
+
+    public int updateGenres(Integer movie_id, List<Integer> genre_id){
+        return 0;
     }
 
 }

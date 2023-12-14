@@ -23,7 +23,7 @@ public class DBConnector {
         try {
             String url = "jdbc:mysql://localhost:3306/java_web_movie?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
             String username = "jwtd_user";
-            String password = "jwtd";
+            String password = "stysty";
             conn = DriverManager.getConnection(url, username, password);
         } catch (SQLException e) {
             e.printStackTrace();

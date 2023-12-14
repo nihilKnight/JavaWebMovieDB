@@ -9,7 +9,7 @@ public class InsertT extends SQLT{
     }
     @Override
     public String toSQL() {
-        this.insertSQL.append("(");
+        this.insertSQL.append(" (");
         this.insertSQL.append(String.join(", ", this.keys));
         this.insertSQL.append(") \nVALUES(");
         this.insertSQL.append(String.join(", ", this.values));

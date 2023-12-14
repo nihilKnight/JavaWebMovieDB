@@ -1,21 +1,24 @@
 package servlet;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import dao.GenreDao;
+import dao.MoviesDao;
 import dao.CastDao;
 import dao.PersonDao;
+import entity.Person;
 import entity.Cast;
+import entity.Genre;
+import entity.Movie;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.List;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import entity.Person;
-
-@WebServlet("/newCastMovie")
-public class castInsertServlet extends HttpServlet {
-
+@WebServlet("/selectByMovieIDAndPersonID")
+public class movieCastServlet extends HttpServlet {
     public static class castPerson{
         public int cast_id = 0;
         public Integer movie_id = 0;
@@ -54,6 +57,7 @@ public class castInsertServlet extends HttpServlet {
         public String name = "";
         public int gender = 0;
     }
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doPost(request, response);
@@ -65,22 +69,25 @@ public class castInsertServlet extends HttpServlet {
         request.setCharacterEncoding("utf-8");
         response.setContentType("text/html;charset=utf-8");
         int movie_id = Integer.valueOf(request.getParameter("movie_id"));
-        int cast_id = Integer.valueOf(request.getParameter("cast_id"));
+        int person_id = Integer.valueOf(request.getParameter("person_id"));
 
-        movieCastServlet.castPerson cp = new movieCastServlet.castPerson();
-        cp.actor_id = 0;
-        cp.cast_id = cast_id;
-        cp.movie_id = movie_id;
-        cp.order_of_appearance = 0;
-        cp.character_name = "";
-        cp.name = "";
-        cp.gender = 0;
+        CastDao cd = new CastDao();
+        Cast cast = cd.SelectByMovieIDAndPersonID(movie_id, person_id);
+        PersonDao pd = new PersonDao();
+        Person person = pd.SelectById(person_id);
+        castPerson cp = new castPerson();
+        cp.actor_id = cast.actor_id;
+        cp.cast_id = cast.cast_id;
+        cp.movie_id = cast.movie_id;
+        cp.order_of_appearance = cast.order_of_appearance;
+        cp.character_name = cast.character_name;
+        cp.name = person.name;
+        cp.gender = person.gender;
 
 
         request.setAttribute("castPerson", cp);
 
 
-        request.getRequestDispatcher("insertByMovieIDAndPersonID.jsp").forward(request,response);
-
+        request.getRequestDispatcher("updateByMovieIDAndPersonID.jsp").forward(request,response);
     }
 }

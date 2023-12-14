@@ -20,13 +20,31 @@ public class Cast {
         return new SQLUtil.DataInfo("actor_id", SQLUtil.DataType.BIGINT, this.actor_id);
     }
     public SQLUtil.DataInfo CharacterName() {
-        return new SQLUtil.DataInfo("actor_id", SQLUtil.DataType.VARCHAR, this.character_name);
+        return new SQLUtil.DataInfo("character_name", SQLUtil.DataType.VARCHAR, this.character_name);
     }
     public SQLUtil.DataInfo OrderOfAppearance() {
-        return new SQLUtil.DataInfo("actor_id", SQLUtil.DataType.INT, this.order_of_appearance);
+        return new SQLUtil.DataInfo("order_of_appearance", SQLUtil.DataType.INT, this.order_of_appearance);
     }
 
+    public int getCast_id() {
+        return cast_id;
+    }
 
+    public Integer getMovie_id() {
+        return movie_id;
+    }
+
+    public Integer getActor_id() {
+        return actor_id;
+    }
+
+    public String getCharacter_name() {
+        return character_name;
+    }
+
+    public int getOrder_of_appearance() {
+        return order_of_appearance;
+    }
 
     /** Setters. */
     public void setCastId(int cast_id) {
