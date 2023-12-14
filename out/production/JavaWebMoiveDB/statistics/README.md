@@ -21,4 +21,4 @@ For each need, it will be elaborated in each `.java` file.
 
 ### Statistics Results
 
-- 
+All the statistics results can be checked [here](../../csv).

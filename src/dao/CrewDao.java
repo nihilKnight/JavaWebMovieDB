@@ -73,7 +73,7 @@ public class CrewDao {
         Crew wanted = new Crew();
         wanted.setMovieId(movie_id);
         return QueryAndResolve(
-                new SelectT(TableName.cast_table)
+                new SelectT(TableName.crew_table)
                         .AddCondition(new Condition(Condition.Opt.E, wanted.MovieId()))
                         .toSQL()
         );
