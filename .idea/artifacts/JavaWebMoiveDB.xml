@@ -1,5 +1,5 @@
 <component name="ArtifactManager">
-  <artifact type="exploded-war" name="JavaWebMoiveDB">
+  <artifact type="exploded-war" build-on-make="true" name="JavaWebMoiveDB">
     <output-path>$PROJECT_DIR$/out/artifacts/JavaWebMoiveDB</output-path>
     <root id="root">
       <element id="directory" name="WEB-INF">
