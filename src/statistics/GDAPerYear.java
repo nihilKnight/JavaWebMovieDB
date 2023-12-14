@@ -1,3 +1,6 @@
+/**
+ * This file is to illustrate the trend of movie genres distribution for most recent 10 years in database.
+ */
 package statistics;
 
 import SQLTemplate.Condition;
@@ -14,9 +17,6 @@ import util.SQLUtil;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-/**
- * This file is to illustrate the trend of movie genres distribution for most recent 10 years in database.
- */
 
 public class GDAPerYear {
     public static final int xDimension = 10;

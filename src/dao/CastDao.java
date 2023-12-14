@@ -77,13 +77,4 @@ public class CastDao {
         );
     }
 
-    public Cast SelectByPersonID(Integer person_id){
-        Cast wanted = new Cast();
-        wanted.setActorId(person_id);
-        return QueryAndResolve(
-                new SelectT(TableName.cast_table)
-                        .AddCondition(new Condition(Condition.Opt.E, wanted.ActorId()))
-                        .toSQL()
-        ).get(0);
-    }
 }

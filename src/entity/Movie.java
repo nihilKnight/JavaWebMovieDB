@@ -44,7 +44,7 @@ public class Movie {
         return new SQLUtil.DataInfo("id", SQLUtil.DataType.BIGINT, this.movie_id);
     }
     public SQLUtil.DataInfo Budget() {
-        return new SQLUtil.DataInfo("bud", SQLUtil.DataType.BIGINT, this.budget);
+        return new SQLUtil.DataInfo("budget", SQLUtil.DataType.BIGINT, this.budget);
     }
     public SQLUtil.DataInfo Homepage() {
         return new SQLUtil.DataInfo("homepage", SQLUtil.DataType.VARCHAR, this.homepage);
