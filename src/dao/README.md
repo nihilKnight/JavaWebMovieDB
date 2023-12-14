@@ -2,7 +2,7 @@
 
 ## Brief Description
 
-*DAO* is the layer communicating between the *database* and the *servlet*.
+*DAO* is the layer communicating between *database* and *servlet*.
 
 *DAO* is operating on *Entity*, but not the one-to-one with *Entity*.
 
