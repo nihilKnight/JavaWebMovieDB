@@ -3,14 +3,14 @@ package entity;
 import util.SQLUtil;
 
 public class KeywordMovie {
-    public Integer movie_id;
-    public Integer keyword_id;
+    public Integer movie_id = 0;
+    public Integer keyword_id = 0;
 
     /** Getters which return the attribute name, attribute type in MySQL, and the exact value. */
-    public SQLUtil.DataInfo getMovieId() {
+    public SQLUtil.DataInfo MovieId() {
         return new SQLUtil.DataInfo("movie_id", SQLUtil.DataType.BIGINT, this.movie_id);
     }
-    public SQLUtil.DataInfo getKeywordId() {
+    public SQLUtil.DataInfo KeywordId() {
         return new SQLUtil.DataInfo("keyword_id", SQLUtil.DataType.BIGINT, this.keyword_id);
     }
 

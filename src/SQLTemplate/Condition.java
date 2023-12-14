@@ -1,6 +1,5 @@
 package SQLTemplate;
 
-import exce.NullConditionOptionException;
 import util.SQLUtil;
 
 public class Condition {
@@ -56,26 +55,21 @@ public class Condition {
     @Override
     public String toString() {
         String ret = null;
-        try {
-            ret = this.attri +
-                switch (this.opt) {
-                    case G -> " > ";
-                    case L -> " < ";
-                    case NG -> " <= ";
-                    case NL -> " >= ";
-                    case E -> " = ";
-                    case NE -> " != ";
-                    case IN -> " IN ";
-                    case NIN -> " NOT IN ";
-                    case EX -> " EXISTS ";
-                    case NEX -> " NOT EXISTS ";
-                    case LI -> " LIKE ";
-                    default -> throw new NullConditionOptionException();
-                } +
-                this.requi;
-        } catch (NullConditionOptionException ncoe) {
-            ncoe.printStackTrace();
-        }
+        ret = this.attri +
+            switch (this.opt) {
+                case G -> " > ";
+                case L -> " < ";
+                case NG -> " <= ";
+                case NL -> " >= ";
+                case E -> " = ";
+                case NE -> " != ";
+                case IN -> " IN ";
+                case NIN -> " NOT IN ";
+                case EX -> " EXISTS ";
+                case NEX -> " NOT EXISTS ";
+                case LI -> " LIKE ";
+            } +
+            this.requi;
         return ret;
     }
 }

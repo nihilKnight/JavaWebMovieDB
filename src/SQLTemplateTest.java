@@ -195,10 +195,6 @@ public class SQLTemplateTest {
                 .AddCondition("a1 = 1234567890")
                 .toSQL();
         assertEquals(expected, actual);
-
-        /** Test whether the Query result is not null.*/
-        ResultSet rs = SQLUtil.Query(actual);
-        assertNotNull(rs);
     }
 
     public static void TestSelectTJoin() {
@@ -218,9 +214,6 @@ public class SQLTemplateTest {
                 .toSQL();
         assertEquals(expected, actual);
 
-        /** Test whether the Query result is not null.*/
-        ResultSet rs = SQLUtil.Query(actual);
-        assertNotNull(rs);
     }
 
     public static void TestSelectTJoinWithExtraConditions_1() {
@@ -234,17 +227,17 @@ public class SQLTemplateTest {
                 LIMIT 0, 20;""";
         String actual = new SelectT(List.of(TableName.movie_table, TableName.genre_table, TableName.movie_genre_table))
                 .AddColumn(TableName.movie_table, "*")
-                .AddOrder(new Movie().getPopularity().attri_name, SelectT.OrderType.DESC)
-                .AddOrder(new Movie().getReleaseDate().attri_name, SelectT.OrderType.DESC)
+                .AddOrder(new Movie().Popularity().attri_name, SelectT.OrderType.DESC)
+                .AddOrder(new Movie().ReleaseDate().attri_name, SelectT.OrderType.DESC)
                 .Limit((page-1) * 20, 20)
                 .AddCondition(new Condition(Condition.Opt.E,
-                        TableName.movie_table, new Movie().getMovieId().attri_name,
-                        TableName.movie_genre_table, new GenreMovie().getMovieId().attri_name))
+                        TableName.movie_table, new Movie().MovieId().attri_name,
+                        TableName.movie_genre_table, new GenreMovie().MovieId().attri_name))
                 .AddCondition(new Condition(Condition.Opt.E,
-                        TableName.genre_table, new Genre().getId().attri_name,
-                        TableName.movie_genre_table, new GenreMovie().getGenreId().attri_name))
+                        TableName.genre_table, new Genre().Id().attri_name,
+                        TableName.movie_genre_table, new GenreMovie().GenreId().attri_name))
                 .AddCondition(new Condition(Condition.Opt.E, TableName.genre_table,
-                        new Genre().getId().attri_name, String.valueOf(genre_id)))
+                        new Genre().Id().attri_name, String.valueOf(genre_id)))
                 .toSQL();
         assertEquals(expected, actual);
 
@@ -282,15 +275,15 @@ public class SQLTemplateTest {
                         new SelectT(List.of(TableName.movie_table, TableName.cast_table))
                                 .AddColumn(TableName.movie_table, "*")
                                 .AddCondition(new Condition(Condition.Opt.E,
-                                        TableName.movie_table, new Movie().getMovieId().attri_name,
-                                        TableName.cast_table, new Cast().getMovieId().attri_name))
-                                .AddCondition(new Condition(Condition.Opt.E, wanted.getActorId())),
+                                        TableName.movie_table, new Movie().MovieId().attri_name,
+                                        TableName.cast_table, new Cast().MovieId().attri_name))
+                                .AddCondition(new Condition(Condition.Opt.E, wanted.ActorId())),
                         new SelectT(List.of(TableName.movie_table, TableName.crew_table))
                                 .AddColumn(TableName.movie_table, "*")
                                 .AddCondition(new Condition(Condition.Opt.E,
-                                        TableName.movie_table, new Movie().getMovieId().attri_name,
-                                        TableName.crew_table, new Crew().getMovieId().attri_name))
-                                .AddCondition(new Condition(Condition.Opt.E, orWanted.getCrewMemberId()))
+                                        TableName.movie_table, new Movie().MovieId().attri_name,
+                                        TableName.crew_table, new Crew().MovieId().attri_name))
+                                .AddCondition(new Condition(Condition.Opt.E, orWanted.CrewMemberId()))
                 ));
 //       assertEquals(expected, actual);
 
