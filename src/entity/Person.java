@@ -5,6 +5,19 @@ import util.SQLUtil;
 
 public class Person {
     public Integer id = 0;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getGender() {
+        return gender;
+    }
+
     public String name = "";
     public int gender = 0;
 

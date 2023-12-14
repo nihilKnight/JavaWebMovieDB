@@ -28,6 +28,7 @@ public class castUpdateServlet extends HttpServlet {
         // 将 JSON 字符串转换为 MovieWithCastDTO 对象
         ObjectMapper objectMapper = new ObjectMapper();
         Cast insertedCast = objectMapper.readValue(jsonFromFrontend, Cast.class);
+        System.out.println(objectMapper.writeValueAsString(insertedCast));
 
         CastDao cd = new CastDao();
         cd.Update(insertedCast);

@@ -13,7 +13,7 @@
 <body>
 <script>
     // 使用 JavaScript 在页面加载时重定向到另一个页面
-    location.href = 'home';
+    location.href = 'updateByMovieId?movie_id=271969';
 </script>
 </body>
 </html>

@@ -2,9 +2,19 @@ package entity;
 
 import util.SQLUtil;
 
+import java.util.Objects;
+
 public class Genre {
     public Integer id = 0;
     public String genre_name = "";
+
+    public Integer getId() {
+        return id;
+    }
+
+    public String getGenre_name() {
+        return genre_name;
+    }
 
     /** Getters which return the attribute name, attribute type in MySQL, and the exact value. */
     public SQLUtil.DataInfo Id() {
@@ -20,5 +30,18 @@ public class Genre {
     }
     public void setGenreName(String genre_name) {
         this.genre_name = genre_name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Genre genre = (Genre) o;
+        return Objects.equals(id, genre.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

@@ -44,6 +44,13 @@ public class CastDao {
     }
 
     public int Insert(Cast c){
+        System.out.println(new InsertT(TableName.cast_table)
+                .AddKeyValuePair(c.MovieId())
+                .AddKeyValuePair(c.CastId())
+                .AddKeyValuePair(c.ActorId())
+                .AddKeyValuePair(c.CharacterName())
+                .AddKeyValuePair(c.OrderOfAppearance())
+                .toSQL());
         return SQLUtil.Update(
                 new InsertT(TableName.cast_table)
                         .AddKeyValuePair(c.MovieId())
@@ -56,6 +63,13 @@ public class CastDao {
     }
 
     public int Update(Cast c){
+        System.out.println(new UpdateT(TableName.cast_table)
+                .AddKeyValuePair(c.ActorId())
+                .AddKeyValuePair(c.CharacterName())
+                .AddKeyValuePair(c.OrderOfAppearance())
+                .AddCondition(new Condition(Condition.Opt.E, c.MovieId()))
+                .AddCondition(new Condition(Condition.Opt.E, c.CastId()))
+                .toSQL());
         return SQLUtil.Update(
                 new UpdateT(TableName.cast_table)
                         .AddKeyValuePair(c.ActorId())
@@ -77,13 +91,19 @@ public class CastDao {
         );
     }
 
-    public Cast SelectByPersonID(Integer person_id){
+    public Cast SelectByMovieIDAndPersonID(Integer movie_id, Integer person_id){
         Cast wanted = new Cast();
         wanted.setActorId(person_id);
+        wanted.setMovieId(movie_id);
         return QueryAndResolve(
                 new SelectT(TableName.cast_table)
                         .AddCondition(new Condition(Condition.Opt.E, wanted.ActorId()))
+                        .AddCondition(new Condition(Condition.Opt.E, wanted.MovieId()))
                         .toSQL()
         ).get(0);
+    }
+
+    public Integer DeleteByMovieIDAndPersonID(Integer movie_id, Integer person_id){
+        return 0;
     }
 }
