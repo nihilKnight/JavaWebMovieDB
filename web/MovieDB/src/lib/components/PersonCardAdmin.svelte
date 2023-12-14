@@ -1,4 +1,5 @@
 <script>
+    import { API } from '$lib/api';
   export let item
   export let media = ''
   import { onMount } from 'svelte'
@@ -15,7 +16,7 @@
 </script>
 
 <div class="rounded-lg hover:bg-gray-200 dark:hover:bg-gray-800 hover:shadow-lg group">
-  <a href={`/等着连8080端口/${item.id}`} class="">
+  <a href={`${API}/updateByPersonId/${item.id}`} class="">
     <div class="">
       <img src={`https://image.tmdb.org/t/p/original${picture}`} 
         alt={item.name || 'NO PICTURE FOUND'}

@@ -49,7 +49,7 @@
     const data = await fetch(
 			`${API}/search?type=${media}&name=${query}&Page=${page}`
 		).then(res => res.json())
-    results = (data.results)
+    results = data
   }
 
   onMount(() => load())

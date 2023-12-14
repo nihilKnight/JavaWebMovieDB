@@ -2,6 +2,7 @@
   export let item
   export let media = ''
   import { onMount } from 'svelte'
+  import { API } from '$lib/api';
   let picture
 
   async function load() {
@@ -15,7 +16,7 @@
 </script>
 
 <div class="rounded-lg hover:bg-gray-200 dark:hover:bg-gray-800 hover:shadow-lg group">
-  <a href={`/等着连8080端口/${item.movie_id}`} class="">
+  <a href={`${API}/updateByMovieId/${item.movie_id}`} class="">
     <div class="">
       <img src={`https://image.tmdb.org/t/p/w500${picture}`} 
         alt={item.title || 'NO PICTURE FOUND'}

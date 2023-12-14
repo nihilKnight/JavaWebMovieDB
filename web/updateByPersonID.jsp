@@ -37,14 +37,14 @@
             console.log(jsonData);
 
             var xhr = new XMLHttpRequest();
-            xhr.open("POST", "http://localhost:8080/JavaWebMoiveDB/personUpdate", true);
+            xhr.open("POST", "http://localhost:8080/JavaWebMoiveDB_Web_exploded/personUpdate", true);
             xhr.setRequestHeader("Content-Type", "application/json");
             xhr.send(jsonData);
         }
 
         function confirmDeleteById(movie_id, person_id) {
             // 构造包含参数的 URL
-            var url = "http://localhost:8080/JavaWebMoiveDB/castDelete?movie_id=" + movie_id + "&person_id=" + person_id;
+            var url = "http://localhost:8080/JavaWebMoiveDB_Web_exploded/castDelete?movie_id=" + movie_id + "&person_id=" + person_id;
             var xhr = new XMLHttpRequest();
             xhr.open("GET", url, true);
             xhr.send();

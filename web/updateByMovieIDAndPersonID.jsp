@@ -13,7 +13,7 @@
         function searchPerson() {
             var searchInput = document.getElementById("searchPersonInput").value;
             var xhr = new XMLHttpRequest();
-            xhr.open("GET", "http://localhost:8080/JavaWebMoiveDB/SearchActorsServlet?query=" + searchInput, true);
+            xhr.open("GET", "http://localhost:8080/JavaWebMoiveDB_Web_exploded/SearchActorsServlet?query=" + searchInput, true);
 
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4 && xhr.status === 200) {
@@ -76,7 +76,7 @@
             console.log(jsonData);
 
             var xhr = new XMLHttpRequest();
-            xhr.open("POST", "http://localhost:8080/JavaWebMoiveDB/castUpdate", true);
+            xhr.open("POST", "http://localhost:8080/JavaWebMoiveDB_Web_exploded/castUpdate", true);
             xhr.setRequestHeader("Content-Type", "application/json");
             xhr.send(jsonData);
         }
