@@ -45,6 +45,7 @@ public class SelectT extends SQLT{
         this.columns.add(table + '.' + column);
         return this;
     }
+
     public SelectT AddOrder(String attri) {
         this.orders.add(attri);
         return this;
@@ -56,6 +57,24 @@ public class SelectT extends SQLT{
         });
         return this;
     }
+    public SelectT AddOrder(GroupFunc groupFunc, String attri) {
+        this.orders.add(Group(groupFunc, attri));
+        return this;
+    }
+    public SelectT AddOrder(GroupFunc groupFunc, String attri, OrderType ot) {
+        this.orders.add(Group(groupFunc, attri)+ switch (ot) {
+                   case ASC -> "ASC";
+                   case DESC -> "DESC";
+        });
+        return this;
+    }
+    public SelectT AddOrder(GroupFunc groupFunc, String table, String attri, OrderType ot) {
+        this.orders.add(Group(groupFunc, table + '.' + attri) + switch (ot) {
+                    case ASC -> "ASC";
+                    case DESC -> "DESC";
+                });
+        return this;
+    }
 
     public SelectT AddGroup(String columnToGroup) {
         this.group.add(columnToGroup);
@@ -63,28 +82,12 @@ public class SelectT extends SQLT{
     }
     public SelectT AddGroup(String groupBy, GroupFunc groupFunc, String columnToGroup) {
         this.group.add(columnToGroup);
-        this.columns.add(
-                switch (groupFunc) {
-                    case COUNT -> "COUNT(";
-                    case MAX -> "MAX(";
-                    case MIN -> "MIN(";
-                    case SUM -> "SUM(";
-                    case AVG -> "AVG(";
-                } + groupBy + ")"
-        );
+        this.columns.add(Group(groupFunc, groupBy));
         return this;
     }
     public SelectT AddGroup(String table, String groupBy, GroupFunc groupFunc, String columnToGroup) {
         this.group.add(columnToGroup);
-        this.columns.add(
-                switch (groupFunc) {
-                    case COUNT -> "COUNT(";
-                    case MAX -> "MAX(";
-                    case MIN -> "MIN(";
-                    case SUM -> "SUM(";
-                    case AVG -> "AVG(";
-                } + table + '.' + groupBy + ")"
-        );
+        this.columns.add(Group(groupFunc, table + '.' + groupBy));
         return this;
     }
 
@@ -159,4 +162,13 @@ public class SelectT extends SQLT{
         return String.join("\nUNION\n", sqls) + ';';
     }
 
+    private static String Group(GroupFunc groupFunc, String groupBy) {
+        return switch (groupFunc) {
+            case COUNT -> "COUNT(";
+            case MAX -> "MAX(";
+            case MIN -> "MIN(";
+            case SUM -> "SUM(";
+            case AVG -> "AVG(";
+        } + groupBy + ")";
+    }
 }
