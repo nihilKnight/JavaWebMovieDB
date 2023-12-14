@@ -20,11 +20,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class personDetailServlet extends HttpServlet {
 
     static class PersonWithMovies{
-        private Cast cast;
-        private List<Movie> movieList;
+        public Person person;
+        public List<Movie> movieList;
 
-        public PersonWithMovies(Cast cast, List<Movie> movieList) {
-            this.cast = cast;
+        public PersonWithMovies(Person person, List<Movie> movieList) {
+            this.person = person;
             this.movieList = movieList;
         }
 
@@ -41,11 +41,11 @@ public class personDetailServlet extends HttpServlet {
         response.setContentType("text/html;charset=utf-8");
         Integer person_id = Integer.valueOf(request.getParameter("person_id"));
 
-        CastDao cd = new CastDao();
-        Cast cast = cd.SelectByPersonID(person_id);
+        PersonDao pd = new PersonDao();
+        Person person = pd.SelectById(person_id);
         MoviesDao md = new MoviesDao();
         List<Movie> movieList = md.selectByPersonID(person_id);
-        PersonWithMovies pwm = new PersonWithMovies(cast, movieList);
+        PersonWithMovies pwm = new PersonWithMovies(person, movieList);
 
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonMovies = objectMapper.writeValueAsString(pwm);

@@ -3,14 +3,14 @@ package entity;
 import util.SQLUtil;
 
 public class Keyword {
-    public Integer id;
-    public String keyword_name;
+    public Integer id = 0;
+    public String keyword_name = "";
 
     /** Getters which return the attribute name, attribute type in MySQL, and the exact value. */
-    public SQLUtil.DataInfo getId() {
+    public SQLUtil.DataInfo Id() {
         return new SQLUtil.DataInfo("id", SQLUtil.DataType.BIGINT, this.id);
     }
-    public SQLUtil.DataInfo getKeywordName() {
+    public SQLUtil.DataInfo KeywordName() {
         return new SQLUtil.DataInfo("keyword_name", SQLUtil.DataType.BIGINT, this.keyword_name);
     }
 

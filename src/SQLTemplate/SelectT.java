@@ -9,11 +9,15 @@ public class SelectT extends SQLT{
     public enum OrderType {
         ASC, DESC
     }
+    public enum GroupFunc {
+        COUNT, MAX, MIN, SUM, AVG
+    }
     public StringBuffer selectSQL;
     public List<String> columns = new ArrayList<>();
     public List<String> tables = new ArrayList<>();
     public List<String> orders = new ArrayList<>();
-    public String limit;
+    public List<String> group = new ArrayList<>();
+    public String limit = null;
 
     public SelectT(List<String> tables) {
         this.tables.addAll(tables);
@@ -23,9 +27,6 @@ public class SelectT extends SQLT{
         this.table = table;
         this.selectSQL = new StringBuffer("SELECT ");
     }
-
-    /** TODO: Write methods enable MySQL expressions (like arithmetics and functions), and alias ("AS"). */
-    /** TODO: Write methods enable grouping functions (MAX, MIN, AVG). */
 
     public SelectT AddCondition(Condition condition) {
         this.conditions.add(condition.toString());
@@ -44,6 +45,7 @@ public class SelectT extends SQLT{
         this.columns.add(table + '.' + column);
         return this;
     }
+
     public SelectT AddOrder(String attri) {
         this.orders.add(attri);
         return this;
@@ -55,6 +57,40 @@ public class SelectT extends SQLT{
         });
         return this;
     }
+    public SelectT AddOrder(GroupFunc groupFunc, String attri) {
+        this.orders.add(Group(groupFunc, attri));
+        return this;
+    }
+    public SelectT AddOrder(GroupFunc groupFunc, String attri, OrderType ot) {
+        this.orders.add(Group(groupFunc, attri)+ switch (ot) {
+                   case ASC -> "ASC";
+                   case DESC -> "DESC";
+        });
+        return this;
+    }
+    public SelectT AddOrder(GroupFunc groupFunc, String table, String attri, OrderType ot) {
+        this.orders.add(Group(groupFunc, table + '.' + attri) + switch (ot) {
+                    case ASC -> "ASC";
+                    case DESC -> "DESC";
+                });
+        return this;
+    }
+
+    public SelectT AddGroup(String columnToGroup) {
+        this.group.add(columnToGroup);
+        return this;
+    }
+    public SelectT AddGroup(String groupBy, GroupFunc groupFunc, String columnToGroup) {
+        this.group.add(columnToGroup);
+        this.columns.add(Group(groupFunc, groupBy));
+        return this;
+    }
+    public SelectT AddGroup(String table, String groupBy, GroupFunc groupFunc, String columnToGroup) {
+        this.group.add(columnToGroup);
+        this.columns.add(Group(groupFunc, table + '.' + groupBy));
+        return this;
+    }
+
     public SelectT Limit(Integer limit) {
         this.limit = String.valueOf(limit);
         return this;
@@ -79,6 +115,9 @@ public class SelectT extends SQLT{
         }
         if (! this.conditions.isEmpty()) {
             this.selectSQL.append(" \nWHERE ").append(String.join(" AND ", this.conditions));
+        }
+        if (! this.group.isEmpty()) {
+            this.selectSQL.append(" \nGROUP BY ").append(String.join(", ", this.group));
         }
         if (! this.orders.isEmpty()) {
             this.selectSQL.append(" \nORDER BY ").append(String.join(", ", this.orders));
@@ -107,6 +146,9 @@ public class SelectT extends SQLT{
             if (! st.conditions.isEmpty()) {
                 sql.append(" \nWHERE ").append(String.join(" AND ", st.conditions));
             }
+            if (! st.group.isEmpty()) {
+                sql.append(" \nGROUP BY").append(String.join(", ", st.group));
+            }
             if (! st.orders.isEmpty()) {
                 sql.append(" \nORDER BY ").append(String.join(", ", st.orders));
             }
@@ -120,4 +162,13 @@ public class SelectT extends SQLT{
         return String.join("\nUNION\n", sqls) + ';';
     }
 
+    private static String Group(GroupFunc groupFunc, String groupBy) {
+        return switch (groupFunc) {
+            case COUNT -> "COUNT(";
+            case MAX -> "MAX(";
+            case MIN -> "MIN(";
+            case SUM -> "SUM(";
+            case AVG -> "AVG(";
+        } + groupBy + ")";
+    }
 }
