@@ -11,6 +11,7 @@
   const id = $page.url.pathname.split('/')[2]
 
   let typeMovies
+  let genre
   let pageNum = 1
   let pages = []
 
@@ -48,6 +49,11 @@
       `${API}/genre?genre_id=${id}&Page=${pageNum}`
 		).then(res => res.json())
     typeMovies = data
+
+    const genreData = await fetch(
+      `${API}/genreById?genre_id=${id}`
+		).then(res => res.json())
+    genre = genreData.genre_name
   }
   
   onMount(() => load())
@@ -56,6 +62,9 @@
 <svelte:head>
 	<title>Search by Genre - MovieDB</title>
 </svelte:head>
+<div class="flex align-center my-6 space-x-4">
+  <h2 class="text-2xl">{genre} Movies</h2>
+</div>
 
 {#if typeMovies}
   <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-4 mb-6">

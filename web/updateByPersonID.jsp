@@ -37,14 +37,14 @@
             console.log(jsonData);
 
             var xhr = new XMLHttpRequest();
-            xhr.open("POST", "http://localhost:8080/JavaWebMoiveDB/personUpdate", true);
+            xhr.open("POST", "http://localhost:8080/JavaWebMoiveDB_Web_exploded/personUpdate", true);
             xhr.setRequestHeader("Content-Type", "application/json");
             xhr.send(jsonData);
         }
 
         function confirmDeleteById(movie_id, person_id) {
             // 构造包含参数的 URL
-            var url = "http://localhost:8080/JavaWebMoiveDB/castDelete?movie_id=" + movie_id + "&person_id=" + person_id;
+            var url = "http://localhost:8080/JavaWebMoiveDB_Web_exploded/castDelete?movie_id=" + movie_id + "&person_id=" + person_id;
             var xhr = new XMLHttpRequest();
             xhr.open("GET", url, true);
             xhr.send();
@@ -79,6 +79,14 @@
         <tr>
             <td>gender</td>
             <td><input type="number" name="gender" value="${person.gender}"></td>
+        </tr>
+        <tr>
+            <td>biography</td>
+            <td><input type="text" name="biography" value="Eric Marlon Bishop (born December 13, 1967), professionally known as Jamie Foxx, is an American actor, singer-songwriter, stand-up comedian, and talk radio host. As an actor, his work in the film Ray earned him the Academy Award and BAFTA Award for Best Actor as well as the Golden Globe Award for Best Actor in a musical/comedy. He is also a Grammy Award winning musician, producing two albums which have charted highly on the Billboard 200: Unpredictable, which topped the chart, and Intuition. Foxx was abandoned seven months after birth, and was subsequently adopted and raised in Terrell by his mother's adoptive parents, Estelle and Mark Talley. Foxx had a strict Baptist upbringing and began piano lessons at the age of five by his grandmother's orders. He has often acknowledged his grandmother's influence in his life as one of the greatest reasons for his success. When he found that female comedians were often called first to perform, he changed his name to Jamie Foxx, feeling that it was an ambiguous enough name to disallow any biases. He chose his surname as a tribute to comedian Redd Foxx. From 1996 to 2001, Foxx starred in his own sitcom The Jamie Foxx Show, and in 1992 he made his film debut in Toys a comedy directed by Barry Levinson. Following Toys, his first dramatic role came in Oliver Stone's 1999 film Any Given Sunday, where he portrayed a hard-partying American football player. Foxx has since evolved into a respected dramatic actor. Foxx was featured as taxi driver Max Durocher in the film Collateral alongside Tom Cruise, for which he received outstanding reviews and a nomination for the Academy Award for Best Supporting Actor. His standout performance, however, was his portrayal of Ray Charles in the biopic Ray (2004), for which he won the Academy Award for Best Actor and the BAFTA Award for Best Actor in a Leading Role. Foxx is the second male in history to receive two acting Oscar nominations in the same year for two different movies, Collateral and Ray. In September 2007, Foxx was awarded a star on the Hollywood Walk of Fame."></td>
+        </tr>
+        <tr>
+            <td>figureLink</td>
+            <td><input type="text" name="figureLink" value="https://image.tmdb.org/t/p/original/zD8Nsy4Xrghp7WunwpCj5JKBPeU.jpg"></td>
         </tr>
         <tr >
             <td align="center" colspan="2">

@@ -2,6 +2,7 @@
   export let item
   export let media = ''
   import { onMount } from 'svelte'
+  import { API } from '$lib/api';
   let picture
 
   async function load() {
@@ -15,7 +16,7 @@
 </script>
 
 <div class="rounded-lg hover:bg-gray-200 dark:hover:bg-gray-800 hover:shadow-lg group">
-  <a href={`/等着连8080端口/${item.movie_id}`} class="">
+  <a href={`${API}/updateByMovieId?movie_id=${item.movie_id}`} class="">
     <div class="">
       <img src={`https://image.tmdb.org/t/p/w500${picture}`} 
         alt={item.title || 'NO PICTURE FOUND'}
@@ -26,8 +27,8 @@
         {item.original_title || item.title}
       </h4>
       <div class="flex justify-between">
-        {#if item.releaseDate}
-        <p class="text-sm">{item.releaseDate}</p>
+        {#if item.release_date}
+        <p class="text-sm">{item.release_date}</p>
         {/if}
         {#if item.vote_average}
         <span class="text-sm text-amber-500 px-1 font-semibold">
