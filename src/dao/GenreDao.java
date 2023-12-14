@@ -64,4 +64,14 @@ public class GenreDao {
                         .toSQL()
         );
     }
+
+    public Genre SelectById(Integer genre_id) {
+        Genre wanted = new Genre();
+        wanted.setId(genre_id);
+        return QueryAndResolve(
+                new SelectT(TableName.genre_table)
+                        .AddCondition(new Condition(Condition.Opt.E, wanted.Id()))
+                        .toSQL()
+        ).get(0);
+    }
 }

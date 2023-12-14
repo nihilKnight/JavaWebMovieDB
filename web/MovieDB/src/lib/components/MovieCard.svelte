@@ -26,8 +26,8 @@
         {item.original_title || item.title}
       </h4>
       <div class="flex justify-between">
-        {#if item.releaseDate}
-        <p class="text-sm">{item.releaseDate}</p>
+        {#if item.release_date}
+        <p class="text-sm">{item.release_date}</p>
         {/if}
         {#if item.vote_average}
         <span class="text-sm text-amber-500 px-1 font-semibold">

@@ -16,7 +16,7 @@
 </script>
 
 <div class="rounded-lg hover:bg-gray-200 dark:hover:bg-gray-800 hover:shadow-lg group">
-  <a href={`${API}/updateByPersonId/${item.id}`} class="">
+  <a href={`${API}/updateByPersonId?person_id=${item.id}`} class="">
     <div class="">
       <img src={`https://image.tmdb.org/t/p/original${picture}`} 
         alt={item.name || 'NO PICTURE FOUND'}
